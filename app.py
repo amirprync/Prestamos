@@ -2,6 +2,7 @@ import streamlit as st
 from docx import Document
 from datetime import datetime
 import pdfkit
+import tempfile
 
 # Cargar el documento de plantilla
 def load_template(file_path):
@@ -52,18 +53,21 @@ if st.button("Generar Documento"):
     
     doc = replace_markers(doc, replacements)
     
-    # Guardar el documento modificado
-    docx_path = '/mnt/data/Oferta_de_Préstamo_Completada.docx'
-    save_document(doc, docx_path)
+    # Guardar el documento modificado en un archivo temporal
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as tmp_docx:
+        docx_path = tmp_docx.name
+        save_document(doc, docx_path)
     
-    # Convertir el documento a PDF
-    pdf_path = '/mnt/data/Oferta_de_Préstamo_Completada.pdf'
-    convert_to_pdf(docx_path, pdf_path)
+    # Convertir el documento a PDF en un archivo temporal
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_pdf:
+        pdf_path = tmp_pdf.name
+        convert_to_pdf(docx_path, pdf_path)
     
-    st.success(f"Documento generado exitosamente: {pdf_path}")
+    # Mostrar éxito y botón de descarga
+    st.success("Documento generado exitosamente.")
     st.download_button(
         label="Descargar Documento PDF",
-        data=open(pdf_path, "rb"),
+        data=open(pdf_path, "rb").read(),
         file_name="Oferta_de_Préstamo_Completada.pdf",
         mime="application/pdf"
     )
