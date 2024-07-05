@@ -24,7 +24,7 @@ class PDF(FPDF):
 
 # Función para sanitizar el texto y evitar problemas de codificación
 def sanitize_text(text):
-    return text.encode('latin1', 'replace').decode('latin1')
+    return str(text).encode('latin1', 'replace').decode('latin1')
 
 # Función para generar el PDF
 def generate_pdf(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
