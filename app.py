@@ -27,7 +27,7 @@ def sanitize_text(text):
     return text.encode('latin1', 'replace').decode('latin1')
 
 # Función para generar el PDF
-def generate_pdf(mes, dia, cliente, interes):
+def generate_pdf(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
     pdf.set_left_margin(10)
@@ -57,12 +57,12 @@ def generate_pdf(mes, dia, cliente, interes):
             f"ANEXO I\n"
             f"OFERTA DE PRÉSTAMO DE VALORES NEGOCIABLES\n"
             f"En el supuesto de ser aceptada la Oferta de Préstamo en los términos aquí previstos, de la cual la presente forma parte como Anexo I, se entenderá que se ha perfeccionado el siguiente contrato de préstamo (en adelante, el 'Contrato de Préstamo' o el 'Contrato' indistintamente), y tendrá como partes a:\n"
-            f"a) {sanitize_text(cliente)}, CUIT [CUIT], con domicilio en [DOMICILIO] (en adelante, el 'Prestamista'), por una parte, y\n"
+            f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit)}, con domicilio en {sanitize_text(domicilio)} (en adelante, el 'Prestamista'), por una parte, y\n"
             f"b) por la otra, COHEN S.A., CUIT 30-55854331-7, con domicilio en la calle Ortiz de Ocampo 3302, Módulo IV, piso 2° de la Ciudad Autónoma de Buenos Aires (en adelante, el 'Tomador' y conjuntamente con el Prestamista, las 'Partes').\n\n"
-            f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: [ESPECIE] por un valor nominal de [VALORNOMINAL] con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n"
-            f"Los Valores Negociables se encuentran depositados en la cuenta comitente [COMITENTEPRESTAMISTA], de su titularidad, abierta en COHEN S.A. (en adelante, la 'Cuenta del Prestamista').\n"
-            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° [COMITENTEPRESTAMISTA] abierta en COHEN S.A. (Agente de Negociación, Liquidación y Compensación Integral N° 21) (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n"
-            f"SEGUNDA: El presente préstamo se establece por un plazo de [PLAZO] meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(interes)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n"
+            f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: {sanitize_text(especie)} por un valor nominal de {sanitize_text(valor_nominal)} con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n"
+            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en COHEN S.A. (en adelante, la 'Cuenta del Prestamista').\n"
+            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en COHEN S.A. (Agente de Negociación, Liquidación y Compensación Integral N° 21) (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n"
+            f"SEGUNDA: El presente préstamo se establece por un plazo de {sanitize_text(plazo)} meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(tasa_anual)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n"
             f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II. El mismo será calculado de acuerdo al Tipo de Cambio [ ] del día de pago.\n"
             f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n"
             f"CUARTA: El Prestamista podrá solicitar la cancelación anticipada del préstamo de los Valores Negociables antes del vencimiento del Plazo, para lo cual deberá notificar por escrito al Tomador con una antelación de 48 horas hábiles a la efectiva fecha de cancelación. En caso de ejercerse tal derecho, el Tomador abonará en forma proporcional el importe de la contraprestación convenida en la cláusula SEGUNDA.\n"
@@ -80,14 +80,14 @@ def generate_pdf(mes, dia, cliente, interes):
             f"DÉCIMO SEXTA: Para todos los efectos legales derivados de esta Oferta, las Partes constituyen sus domicilios en los indicados en el segundo párrafo del presente Anexo, donde se tendrán por válidas todas las notificaciones. Toda controversia relacionada al presente Contrato será resuelta en forma inapelable por el Tribunal de Arbitraje General de la Bolsa de Comercio de Buenos Aires por las reglas del arbitraje de derecho, que las partes declaran conocer y aceptar.\n"
             f"\nANEXO II\n"
             f"Condiciones de la operación de Préstamo de Títulos Valores:\n"
-            f"Prestamista: [PRESTAMISTA], cuenta Comitente N° [COMITENTEPRESTAMISTA] Depositante N° [DEPOSITANTEPRESTAMISTA].\n"
-            f"Tomador: [TOMADOR], cuenta comitente N° [COMITENTETOMADOR] Depositante N° [DEPOSITANTETOMADOR].\n"
-            f"Especie: [ESPECIE] (código especie [CODIGOESPECIE]).\n"
-            f"Valor Nominal: [VALORNOMINAL].\n"
-            f"Tasa: {sanitize_text(interes)}% nominal anual.\n"
+            f"Prestamista: {sanitize_text(prestamista)}, cuenta Comitente N° {sanitize_text(comitente_prestamista)} Depositante N° {sanitize_text(depositante_prestamista)}.\n"
+            f"Tomador: {sanitize_text(tomador)}, cuenta comitente N° {sanitize_text(comitente_tomador)} Depositante N° {sanitize_text(depositante_tomador)}.\n"
+            f"Especie: {sanitize_text(especie)} (código especie {sanitize_text(codigo_especie)}).\n"
+            f"Valor Nominal: {sanitize_text(valor_nominal)}.\n"
+            f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio [ ] del día de pago.\n"
-            f"Plazo: [PLAZO] meses.\n"
-            f"Cuenta bancaria del Prestamista: [CUENTABANCARIA]\n"
+            f"Plazo: {sanitize_text(plazo)} meses.\n"
+            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -103,8 +103,22 @@ dia = st.selectbox("Día", list(range(1, 32)))
 # Otros campos necesarios
 cliente = st.text_input("Cliente", "")
 interes = st.text_input("Interés", "")
+prestamista = st.text_input("Prestamista", "")
+comitente_prestamista = st.text_input("Comitente Prestamista", "")
+depositante_prestamista = st.text_input("Depositante Prestamista", "")
+tomador = st.text_input("Tomador", "")
+comitente_tomador = st.text_input("Comitente Tomador", "")
+depositante_tomador = st.text_input("Depositante Tomador", "")
+especie = st.text_input("Especie", "")
+codigo_especie = st.text_input("Código Especie", "")
+valor_nominal = st.text_input("Valor Nominal", "")
+tasa_anual = st.text_input("Tasa Anual", "")
+plazo = st.text_input("Plazo (en meses)", "")
+cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista", "")
+cuit = st.text_input("CUIT", "")
+domicilio = st.text_input("Domicilio", "")
 
 # Botón para generar el PDF
 if st.button("Generar PDF"):
-    pdf_data = generate_pdf(mes, dia, cliente, interes)
+    pdf_data = generate_pdf(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
     st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
