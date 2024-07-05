@@ -96,9 +96,11 @@ def generate_pdf(mes, dia, cliente, interes):
 # Interfaz de Streamlit
 st.title("Generador de PDF de Oferta de Préstamo")
 
-# Formulario de entrada
-mes = st.text_input("Mes", "")
-dia = st.text_input("Día", "")
+# Campos para seleccionar el mes y el día
+mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
+dia = st.selectbox("Día", list(range(1, 32)))
+
+# Otros campos necesarios
 cliente = st.text_input("Cliente", "")
 interes = st.text_input("Interés", "")
 
