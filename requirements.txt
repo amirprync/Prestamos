@@ -4,4 +4,3 @@ altair
 lxml
 xlrd
 openpyxl
-python-docx pdfkit
