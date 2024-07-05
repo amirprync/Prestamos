@@ -8,3 +8,4 @@ streamlit
 python-docx
 pdfkit
 fpdf
+inflect
