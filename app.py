@@ -112,7 +112,7 @@ def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comi
     valor_nominal_texto = number_to_text(valor_nominal)
     plazo_texto = number_to_text(plazo)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(mes)} de {sanitize_text(dia)} de 2024\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
             f"Cohen S.A.\n"
             f"Presente\n\n"
