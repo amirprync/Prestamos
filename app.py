@@ -1,7 +1,6 @@
 import streamlit as st
 from fpdf import FPDF
 
-# Función para generar el PDF
 def generate_pdf(mes, dia, cliente, interes):
     pdf = FPDF()
     pdf.add_page()
