@@ -4,23 +4,29 @@ from datetime import datetime
 import pdfkit
 import tempfile
 
-# Cargar el documento de plantilla
+# Función para cargar el documento de plantilla
 def load_template(file_path):
     return Document(file_path)
 
-# Reemplazar los marcadores en el documento
+# Función para reemplazar los marcadores en el documento
 def replace_markers(doc, replacements):
     for paragraph in doc.paragraphs:
         for key, value in replacements.items():
             if key in paragraph.text:
                 paragraph.text = paragraph.text.replace(key, value)
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for key, value in replacements.items():
+                    if key in cell.text:
+                        cell.text = cell.text.replace(key, value)
     return doc
 
-# Guardar el documento modificado
+# Función para guardar el documento modificado
 def save_document(doc, file_path):
     doc.save(file_path)
 
-# Convertir documento a PDF
+# Función para convertir documento a PDF
 def convert_to_pdf(docx_path, pdf_path):
     pdfkit.from_file(docx_path, pdf_path)
 
@@ -37,8 +43,10 @@ comitente_prestamista = st.text_input("Comitente Prestamista")
 
 # Botón para generar el documento
 if st.button("Generar Documento"):
-    # Cargar el documento de plantilla
+    # Ruta fija al documento de plantilla
     template_path = '/mnt/data/MODELO A - Cohen SA - Oferta de préstamo de VN - COHEN TOMADOR.docx'
+    
+    # Cargar el documento de plantilla
     doc = load_template(template_path)
     
     # Reemplazar los marcadores con los datos ingresados
