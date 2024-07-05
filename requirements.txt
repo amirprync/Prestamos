@@ -4,3 +4,6 @@ altair
 lxml
 xlrd
 openpyxl
+streamlit
+python-docx
+pdfkit
