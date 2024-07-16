@@ -299,7 +299,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
     return pdf.output(dest='S').encode('latin1')
 
 def enviar_email(pdf_data, file_name):
-    remitente = 'tu_correo@gmail.com'
+    remitente = 'gallo@cohen.com.ar'
     destinatario = 'ddjj@cohen.com.ar'
     asunto = 'Archivo generado'
     cuerpo = 'Adjunto el archivo generado.'
