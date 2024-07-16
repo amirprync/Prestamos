@@ -1,6 +1,12 @@
 import streamlit as st
 from fpdf import FPDF
 import inflect
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
+import os
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
@@ -292,6 +298,41 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
+def enviar_email(pdf_data, file_name):
+    remitente = 'tu_correo@gmail.com'
+    destinatario = 'ddjj@cohen.com.ar'
+    asunto = 'Archivo generado'
+    cuerpo = 'Adjunto el archivo generado.'
+
+    # Configuración del servidor SMTP de Gmail
+    servidor_smtp = 'smtp.gmail.com'
+    puerto_smtp = 587
+    usuario_smtp = 'tu_correo@gmail.com'
+    contrasena_smtp = 'tu_contraseña_de_gmail'
+
+    # Creación del mensaje
+    mensaje = MIMEMultipart()
+    mensaje['From'] = remitente
+    mensaje['To'] = destinatario
+    mensaje['Subject'] = asunto
+    mensaje.attach(MIMEText(cuerpo, 'plain'))
+
+    # Adjuntar el archivo
+    parte = MIMEBase('application', 'octet-stream')
+    parte.set_payload(pdf_data)
+    encoders.encode_base64(parte)
+    parte.add_header('Content-Disposition', f"attachment; filename= {file_name}")
+    mensaje.attach(parte)
+
+    # Conexión y envío del correo
+    servidor = smtplib.SMTP(servidor_smtp, puerto_smtp)
+    servidor.starttls()
+    servidor.login(usuario_smtp, contrasena_smtp)
+    texto = mensaje.as_string()
+    servidor.sendmail(remitente, destinatario, texto)
+    servidor.quit()
+    print('Correo enviado exitosamente')
+
 # Interfaz de Streamlit
 st.title("Generador de PDF de Oferta de Préstamo")
 
@@ -336,3 +377,6 @@ if st.button("Generar PDF"):
         pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
     
     st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
+    
+    # Enviar el PDF por correo electrónico
+    enviar_email(pdf_data, "oferta_prestamo.pdf")
