@@ -307,8 +307,8 @@ def enviar_email(pdf_data, file_name):
     # Configuración del servidor SMTP de Gmail
     servidor_smtp = 'smtp.gmail.com'
     puerto_smtp = 587
-    usuario_smtp = 'tu_correo@gmail.com'
-    contrasena_smtp = 'tu_contraseña_de_gmail'
+    usuario_smtp = 'gallo@cohen.com.ar'
+    contrasena_smtp = 'Cambiar21!'
 
     # Creación del mensaje
     mensaje = MIMEMultipart()
