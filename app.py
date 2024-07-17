@@ -298,7 +298,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
     return pdf.output(dest='S').encode('latin1')
 
 def enviar_email(pdf_data, file_name):
-    remitente = 'tu_correo@gmail.com'
+    remitente = 'gallo@cohen.com.ar'
     destinatario = 'ddjj@cohen.com.ar'
     asunto = 'Archivo generado'
     cuerpo = 'Adjunto el archivo generado.'
@@ -306,8 +306,8 @@ def enviar_email(pdf_data, file_name):
     # Configuración del servidor SMTP de Gmail
     servidor_smtp = 'smtp.gmail.com'
     puerto_smtp = 587
-    usuario_smtp = 'tu_correo@gmail.com'
-    contrasena_smtp = 'tu_contraseña_de_gmail'
+    usuario_smtp = 'gallo@cohen.com.ar'
+    contrasena_smtp = 'CAmbiar21!'
 
     try:
         # Creación del mensaje
@@ -315,13 +315,13 @@ def enviar_email(pdf_data, file_name):
         mensaje['From'] = remitente
         mensaje['To'] = destinatario
         mensaje['Subject'] = asunto
-        mensaje.attach(MIMEText(cuerpo, 'plain'))
+        mensaje.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
 
         # Adjuntar el archivo
         parte = MIMEBase('application', 'octet-stream')
         parte.set_payload(pdf_data)
         encoders.encode_base64(parte)
-        parte.add_header('Content-Disposition', f"attachment; filename= {file_name}")
+        parte.add_header('Content-Disposition', f"attachment; filename={file_name}")
         mensaje.attach(parte)
 
         # Conexión y envío del correo
@@ -329,7 +329,7 @@ def enviar_email(pdf_data, file_name):
         servidor.starttls()
         servidor.login(usuario_smtp, contrasena_smtp)
         texto = mensaje.as_string()
-        servidor.sendmail(remitente, destinatario, texto)
+        servidor.sendmail(remitente, destinatario, texto.encode('utf-8'))
         servidor.quit()
         st.success('Correo enviado exitosamente')
     except Exception as e:
