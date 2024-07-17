@@ -6,7 +6,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
-import os
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
@@ -299,39 +298,42 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
     return pdf.output(dest='S').encode('latin1')
 
 def enviar_email(pdf_data, file_name):
-    remitente = 'gallo@cohen.com.ar'
+    remitente = 'tu_correo@gmail.com'
     destinatario = 'ddjj@cohen.com.ar'
     asunto = 'Archivo generado'
     cuerpo = 'Adjunto el archivo generado.'
 
     # Configuración del servidor SMTP de Gmail
     servidor_smtp = 'smtp.gmail.com'
-    puerto_smtp = 465
-    usuario_smtp = 'gallo@cohen.com.ar'
-    contrasena_smtp = 'Cambiar21!'
+    puerto_smtp = 587
+    usuario_smtp = 'tu_correo@gmail.com'
+    contrasena_smtp = 'tu_contraseña_de_gmail'
 
-    # Creación del mensaje
-    mensaje = MIMEMultipart()
-    mensaje['From'] = remitente
-    mensaje['To'] = destinatario
-    mensaje['Subject'] = asunto
-    mensaje.attach(MIMEText(cuerpo, 'plain'))
+    try:
+        # Creación del mensaje
+        mensaje = MIMEMultipart()
+        mensaje['From'] = remitente
+        mensaje['To'] = destinatario
+        mensaje['Subject'] = asunto
+        mensaje.attach(MIMEText(cuerpo, 'plain'))
 
-    # Adjuntar el archivo
-    parte = MIMEBase('application', 'octet-stream')
-    parte.set_payload(pdf_data)
-    encoders.encode_base64(parte)
-    parte.add_header('Content-Disposition', f"attachment; filename= {file_name}")
-    mensaje.attach(parte)
+        # Adjuntar el archivo
+        parte = MIMEBase('application', 'octet-stream')
+        parte.set_payload(pdf_data)
+        encoders.encode_base64(parte)
+        parte.add_header('Content-Disposition', f"attachment; filename= {file_name}")
+        mensaje.attach(parte)
 
-    # Conexión y envío del correo
-    servidor = smtplib.SMTP(servidor_smtp, puerto_smtp)
-    servidor.starttls()
-    servidor.login(usuario_smtp, contrasena_smtp)
-    texto = mensaje.as_string()
-    servidor.sendmail(remitente, destinatario, texto)
-    servidor.quit()
-    print('Correo enviado exitosamente')
+        # Conexión y envío del correo
+        servidor = smtplib.SMTP(servidor_smtp, puerto_smtp)
+        servidor.starttls()
+        servidor.login(usuario_smtp, contrasena_smtp)
+        texto = mensaje.as_string()
+        servidor.sendmail(remitente, destinatario, texto)
+        servidor.quit()
+        st.success('Correo enviado exitosamente')
+    except Exception as e:
+        st.error(f'Error al enviar el correo: {e}')
 
 # Interfaz de Streamlit
 st.title("Generador de PDF de Oferta de Préstamo")
