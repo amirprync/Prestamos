@@ -1,11 +1,11 @@
 import streamlit as st
 from fpdf import FPDF
-import inflect
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
+from num2words import num2words
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
@@ -32,10 +32,9 @@ class PDF(FPDF):
 def sanitize_text(text):
     return str(text).encode('latin1', 'replace').decode('latin1')
 
-# Función para convertir números en texto
+# Función para convertir números en texto en español
 def number_to_text(number):
-    p = inflect.engine()
-    return p.number_to_words(number, andword="").replace("-", " ").capitalize()
+    return num2words(number, lang='es').replace('-', ' ').capitalize()
 
 # Función para generar el PDF para PRESTAMO ENTRE CLIENTES
 def generate_pdf_prestamo_entre_clientes(mes, dia, prestamista, tomador, cuit_prestamista, cuit_tomador, domicilio_prestamista, domicilio_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, comitente_prestamista, depositante_prestamista, comitente_tomador, depositante_tomador, tasa_penalidad):
