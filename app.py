@@ -6,6 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
+from num2words import num2words
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
