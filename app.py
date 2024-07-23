@@ -491,53 +491,38 @@ st.markdown("""
 
 st.title("Generador de PDF de Oferta de Préstamo")
 
-with st.expander("Información General", expanded=True):
-    col1, col2 = st.columns(2)
-    with col1:
-        tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
-        mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
-        dia = st.selectbox("Día", list(range(1, 32)))
-    with col2:
-        cliente = st.text_input("Cliente")
-        interes = st.text_input("Tasa de Penalidad - Interés")
-        prestamista = st.text_input("Prestamista")
-
-with st.expander("Detalles del Préstamo", expanded=True):
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        comitente_prestamista = st.text_input("Comitente Prestamista")
-        depositante_prestamista = st.text_input("Depositante Prestamista")
-        tomador = st.text_input("Tomador")
-    with col2:
-        comitente_tomador = st.text_input("Comitente Tomador")
-        depositante_tomador = st.text_input("Depositante Tomador")
-        especie = st.text_input("Especie")
-    with col3:
-        codigo_especie = st.text_input("Código Especie")
-        valor_nominal = st.text_input("Valor Nominal")
-        tasa_anual = st.text_input("Tasa Anual")
-
-with st.expander("Información Adicional", expanded=True):
-    col1, col2 = st.columns(2)
-    with col1:
-        plazo = st.text_input("Plazo (en meses)")
-        cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista")
-    with col2:
-        cuit = st.text_input("CUIT")
-        domicilio = st.text_input("Domicilio")
+tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
+mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
+dia = st.selectbox("Día", list(range(1, 32)))
+cliente = st.number_input("Cliente", min_value=0, step=1)
+interes = st.selectbox("Tasa de Penalidad - Interés", [f"{i}%" for i in range(1, 21)])
+prestamista = st.text_input("Prestamista")
+comitente_prestamista = st.number_input("Comitente Prestamista", min_value=0, step=1)
+depositante_prestamista = st.text_input("Depositante Prestamista")
+tomador = st.text_input("Tomador")
+comitente_tomador = st.number_input("Comitente Tomador", min_value=0, step=1)
+depositante_tomador = st.text_input("Depositante Tomador")
+especie = st.text_input("Especie")
+codigo_especie = st.text_input("Código Especie")
+valor_nominal = st.number_input("Valor Nominal", min_value=0, step=1)
+tasa_anual = st.selectbox("Tasa Anual", [f"{i}%" for i in range(1, 21)])
+plazo = st.selectbox("Plazo (en meses)", list(range(1, 13)))
+cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista")
+cuit = st.number_input("CUIT", min_value=0, step=1)
+domicilio = st.text_input("Domicilio")
 
 if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"]:
-    with st.expander("Información Específica para Préstamos entre Clientes", expanded=True):
-        col1, col2 = st.columns(2)
-        with col1:
-            domicilio_prestamista = st.text_input("Domicilio Prestamista")
-            cuit_prestamista = st.text_input("CUIT Prestamista")
-        with col2:
-            domicilio_tomador = st.text_input("Domicilio Tomador")
-            cuit_tomador = st.text_input("CUIT Tomador")
+    domicilio_prestamista = st.text_input("Domicilio Prestamista")
+    cuit_prestamista = st.number_input("CUIT Prestamista", min_value=0, step=1)
+    domicilio_tomador = st.text_input("Domicilio Tomador")
+    cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
 
 if st.button("Generar PDF"):
     with st.spinner("Generando PDF..."):
+        # Convertir los valores de los selectbox a formato adecuado
+        interes = int(interes.replace('%', ''))
+        tasa_anual = int(tasa_anual.replace('%', ''))
+        
         if tipo_prestamo == "COHEN TOMADOR":
             pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
         elif tipo_prestamo == "COHEN PRESTAMISTA":
