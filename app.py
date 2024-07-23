@@ -473,60 +473,111 @@ def enviar_email(pdf_data, file_name):
         st.error(f'Error al enviar el correo: {e}')
 
 # Interfaz de Streamlit
+# Interfaz de Streamlit
+st.set_page_config(page_title="Generador de Oferta de Préstamo", layout="wide")
+
+st.markdown("""
+<style>
+    .reportview-container {
+        background: #f0f2f6;
+    }
+    .main {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+    }
+    .stSelectbox {
+        background-color: white;
+        border-radius: 5px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("Generador de PDF de Oferta de Préstamo")
+st.markdown("---")
 
-# Selección del tipo de préstamo
-tipo_prestamo = st.selectbox("Seleccione el tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
+col1, col2, col3 = st.columns(3)
 
-# Campos para seleccionar el mes y el día
-mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
-dia = st.selectbox("Día", list(range(1, 32)))
+with col1:
+    tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
+    mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
+    dia = st.selectbox("Día", list(range(1, 32)))
 
-# Otros campos necesarios
-cliente = st.text_input("Cliente", "")
-interes = st.text_input("Tasa de Penalidad - Interés", "")
-prestamista = st.text_input("Prestamista", "")
-comitente_prestamista = st.text_input("Comitente Prestamista", "")
-depositante_prestamista = st.text_input("Depositante Prestamista", "")
-tomador = st.text_input("Tomador", "")
-comitente_tomador = st.text_input("Comitente Tomador", "")
-depositante_tomador = st.text_input("Depositante Tomador", "")
-especie = st.text_input("Especie", "")
-codigo_especie = st.text_input("Código Especie", "")
-valor_nominal = st.text_input("Valor Nominal", "")
-tasa_anual = st.text_input("Tasa Anual", "")
-plazo = st.text_input("Plazo (en meses)", "")
-cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista", "")
-cuit = st.text_input("CUIT", "")
-domicilio = st.text_input("Domicilio", "")
+with col2:
+    cliente = st.text_input("Cliente")
+    interes = st.text_input("Tasa de Penalidad - Interés")
+    prestamista = st.text_input("Prestamista")
+    comitente_prestamista = st.text_input("Comitente Prestamista")
+    depositante_prestamista = st.text_input("Depositante Prestamista")
 
-# Campos adicionales para PRESTAMO ENTRE CLIENTES y PRESTAMO ENTRE CLIENTES T-BILLS
+with col3:
+    tomador = st.text_input("Tomador")
+    comitente_tomador = st.text_input("Comitente Tomador")
+    depositante_tomador = st.text_input("Depositante Tomador")
+    especie = st.text_input("Especie")
+    codigo_especie = st.text_input("Código Especie")
+
+st.markdown("---")
+
+col4, col5 = st.columns(2)
+
+with col4:
+    valor_nominal = st.text_input("Valor Nominal")
+    tasa_anual = st.text_input("Tasa Anual")
+    plazo = st.text_input("Plazo (en meses)")
+
+with col5:
+    cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista")
+    cuit = st.text_input("CUIT")
+    domicilio = st.text_input("Domicilio")
+
 if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"]:
-    domicilio_prestamista = st.text_input("Domicilio Prestamista", "")
-    domicilio_tomador = st.text_input("Domicilio Tomador", "")
-    cuit_prestamista = st.text_input("CUIT Prestamista", "")
-    cuit_tomador = st.text_input("CUIT Tomador", "")
+    st.markdown("---")
+    st.subheader("Información adicional")
+    col6, col7 = st.columns(2)
+    with col6:
+        domicilio_prestamista = st.text_input("Domicilio Prestamista")
+        cuit_prestamista = st.text_input("CUIT Prestamista")
+    with col7:
+        domicilio_tomador = st.text_input("Domicilio Tomador")
+        cuit_tomador = st.text_input("CUIT Tomador")
 
-# Botón para generar el PDF
+st.markdown("---")
+
 if st.button("Generar PDF"):
-    if tipo_prestamo == "COHEN TOMADOR":
-        pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == "COHEN PRESTAMISTA":
-        pdf_data = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
-        valor_nominal_texto = number_to_text(valor_nominal)
-        plazo_texto = number_to_text(plazo)
-        pdf_data = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == "COHEN PRESTAMISTA T-BILLS":
-        valor_nominal_texto = number_to_text(valor_nominal)
-        plazo_texto = number_to_text(plazo)
-        pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
-        pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
-    elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES T-BILLS":
-        pdf_data = generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
-    
+    with st.spinner("Generando PDF..."):
+        if tipo_prestamo == "COHEN TOMADOR":
+            pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == "COHEN PRESTAMISTA":
+            pdf_data = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
+            valor_nominal_texto = number_to_text(valor_nominal)
+            plazo_texto = number_to_text(plazo)
+            pdf_data = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == "COHEN PRESTAMISTA T-BILLS":
+            valor_nominal_texto = number_to_text(valor_nominal)
+            plazo_texto = number_to_text(plazo)
+            pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
+            pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
+        elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES T-BILLS":
+            pdf_data = generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
+        
+    st.success("PDF generado con éxito")
     st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
     
-    # Enviar el PDF por correo electrónico
-    enviar_email(pdf_data, "oferta_prestamo.pdf")
+    if st.button("Enviar por correo"):
+        with st.spinner("Enviando correo..."):
+            enviar_email(pdf_data, "oferta_prestamo.pdf")
+
+st.markdown("---")
+st.markdown("Desarrollado por el equipo de TI de Cohen S.A.")
