@@ -1,5 +1,4 @@
 import streamlit as st
-import base64
 from fpdf import FPDF
 from num2words import num2words
 import smtplib
@@ -8,11 +7,43 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
-# Cargar el logo
+# Función para cargar y convertir el logo a base64
 def load_logo():
-    with open("/mnt/data/BaseStreamer.svg", "rb") as logo_file:
-        logo_base64 = base64.b64encode(logo_file.read()).decode()
+    logo_path = "/mnt/data/BaseStreamer.svg"
+    with open(logo_path, "rb") as logo_file:
+        logo_base64 = base64.b64encode(logo_file.read()).decode("utf-8")
     return logo_base64
+
+logo_base64 = load_logo()
+
+# CSS para mejorar el estilo de la página
+st.markdown("""
+    <style>
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 150px;
+        }
+        .title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .stButton button {
+            display: block;
+            margin: auto;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
@@ -371,70 +402,83 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
-# Título de la aplicación
-st.title("Generador de Documentos PDF")
+# Función para enviar el correo electrónico
+def send_email(subject, body, to, attachment):
+    from_address = 'tuemail@gmail.com'
+    password = 'tucontraseña'
 
-# Subtítulo de la aplicación
-st.subheader("Complete el formulario para generar los documentos PDF")
+    msg = MIMEMultipart()
+    msg['From'] = from_address
+    msg['To'] = to
+    msg['Subject'] = subject
 
-# Imagen del logo
-logo_base64 = load_logo()
-st.markdown(f'<img src="data:image/svg+xml;base64,{logo_base64}" class="logo">', unsafe_allow_html=True)
+    msg.attach(MIMEText(body, 'plain'))
 
-# Campos del formulario
-formulario_tipo = st.selectbox("Seleccione el tipo de formulario", ("COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES"))
-mes = st.text_input("Mes")
-dia = st.text_input("Día")
-cliente = st.text_input("Cliente")
-interes = st.text_input("Interés (%)")
-prestamista = st.text_input("Prestamista")
-comitente_prestamista = st.text_input("Comitente Prestamista")
-depositante_prestamista = st.text_input("Depositante Prestamista")
-tomador = st.text_input("Tomador")
-comitente_tomador = st.text_input("Comitente Tomador")
-depositante_tomador = st.text_input("Depositante Tomador")
-especie = st.text_input("Especie")
-codigo_especie = st.text_input("Código Especie")
-valor_nominal = st.number_input("Valor Nominal", min_value=0, value=0, step=1)
-tasa_anual = st.text_input("Tasa Anual (%)")
-plazo = st.number_input("Plazo (meses)", min_value=0, value=0, step=1)
-cuenta_bancaria = st.text_input("Cuenta Bancaria")
-cuit = st.text_input("CUIT")
-domicilio = st.text_input("Domicilio")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment)
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="oferta_prestamo.pdf"')
 
-# Botón para generar el PDF
-if st.button("Generar PDF"):
-    if formulario_tipo == "COHEN TOMADOR":
-        pdf_content = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif formulario_tipo == "COHEN PRESTAMISTA":
-        pdf_content = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif formulario_tipo == "COHEN TOMADOR T-BILLS":
+    msg.attach(part)
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(from_address, password)
+        server.sendmail(from_address, to, msg.as_string())
+
+# Función principal de la aplicación
+def main():
+    st.markdown("<div class='container'>", unsafe_allow_html=True)
+    st.image(f"data:image/svg+xml;base64,{logo_base64}", width=200)
+    st.markdown("<h1 class='title'>Generador de Contratos de Préstamo</h1>", unsafe_allow_html=True)
+
+    # Campos del formulario
+    form = st.form(key='form')
+    tipo_prestamo = form.selectbox('Seleccione el tipo de préstamo', ['COHEN TOMADOR', 'COHEN PRESTAMISTA', 'COHEN TOMADOR T-BILLS', 'COHEN PRESTAMISTA T-BILLS', 'PRESTAMO ENTRE CLIENTES'])
+    mes = form.text_input('Mes')
+    dia = form.text_input('Día')
+    cliente = form.text_input('Cliente')
+    interes = form.text_input('Interés (%)')
+    prestamista = form.text_input('Prestamista')
+    comitente_prestamista = form.text_input('Comitente Prestamista')
+    depositante_prestamista = form.text_input('Depositante Prestamista')
+    tomador = form.text_input('Tomador')
+    comitente_tomador = form.text_input('Comitente Tomador')
+    depositante_tomador = form.text_input('Depositante Tomador')
+    especie = form.text_input('Especie')
+    codigo_especie = form.text_input('Código Especie')
+    valor_nominal = form.text_input('Valor Nominal')
+    tasa_anual = form.text_input('Tasa Anual (%)')
+    plazo = form.text_input('Plazo (meses)')
+    cuenta_bancaria = form.text_input('Cuenta Bancaria')
+    cuit = form.text_input('CUIT')
+    domicilio = form.text_input('Domicilio')
+    email = form.text_input('Email')
+
+    submit_button = form.form_submit_button(label='Generar PDF')
+
+    if submit_button:
         valor_nominal_texto = number_to_text(valor_nominal)
         plazo_texto = number_to_text(plazo)
-        pdf_content = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    elif formulario_tipo == "COHEN PRESTAMISTA T-BILLS":
-        valor_nominal_texto = number_to_text(valor_nominal)
-        plazo_texto = number_to_text(plazo)
-        pdf_content = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    elif formulario_tipo == "PRESTAMO ENTRE CLIENTES":
-        valor_nominal_texto = number_to_text(valor_nominal)
-        plazo_texto = number_to_text(plazo)
-        pdf_content = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
-    
-    st.download_button(label="Descargar PDF", data=pdf_content, file_name="documento.pdf", mime="application/pdf")
+        
+        if tipo_prestamo == 'COHEN TOMADOR':
+            pdf_bytes = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == 'COHEN PRESTAMISTA':
+            pdf_bytes = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == 'COHEN TOMADOR T-BILLS':
+            pdf_bytes = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == 'COHEN PRESTAMISTA T-BILLS':
+            pdf_bytes = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+        elif tipo_prestamo == 'PRESTAMO ENTRE CLIENTES':
+            pdf_bytes = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+        
+        st.download_button(label='Descargar PDF', data=pdf_bytes, file_name='oferta_prestamo.pdf', mime='application/octet-stream')
 
-# Estilo CSS personalizado
-st.markdown("""
-<style>
-    .logo {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-    }
-    .stButton button {
-        display: block;
-        margin: 0 auto;
-    }
-</style>
-""", unsafe_allow_html=True)
+        if email:
+            send_email('Oferta de Préstamo', 'Adjunto encontrará la oferta de préstamo generada.', email, pdf_bytes)
+            st.success('Email enviado exitosamente.')
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+if __name__ == '__main__':
+    main()
