@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 from fpdf import FPDF
 from num2words import num2words
 import smtplib
@@ -8,15 +9,16 @@ from email.mime.text import MIMEText
 from email import encoders
 
 # Cargar el logo
-logo_path = "/mnt/data/BaseStreamer.svg"
+def load_logo():
+    with open("/mnt/data/BaseStreamer.svg", "rb") as logo_file:
+        logo_base64 = base64.b64encode(logo_file.read()).decode()
+    return logo_base64
 
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
     def header(self):
-        self.image(logo_path, 10, 8, 33)  # Añadir el logo al PDF
         self.set_font('Arial', 'B', 12)
         self.cell(0, 10, 'Oferta de Préstamo', 0, 1, 'C')
-        self.ln(20)  # Espacio después del encabezado
 
     def footer(self):
         self.set_y(-15)
@@ -369,51 +371,70 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
-# Configuración de la aplicación de Streamlit
-st.title('Generador de PDF para Ofertas de Préstamo')
+# Título de la aplicación
+st.title("Generador de Documentos PDF")
 
-st.sidebar.header('Detalles del Préstamo')
-tipo_prestamo = st.sidebar.selectbox('Seleccione el tipo de préstamo', ['COHEN TOMADOR', 'COHEN PRESTAMISTA', 'COHEN TOMADOR T-BILLS', 'COHEN PRESTAMISTA T-BILLS', 'PRESTAMO ENTRE CLIENTES'])
+# Subtítulo de la aplicación
+st.subheader("Complete el formulario para generar los documentos PDF")
 
-mes = st.sidebar.text_input('Mes')
-dia = st.sidebar.text_input('Día')
-cliente = st.sidebar.text_input('Cliente')
-interes = st.sidebar.text_input('Interés (%)')
-prestamista = st.sidebar.text_input('Prestamista')
-comitente_prestamista = st.sidebar.text_input('Cuenta Comitente Prestamista')
-depositante_prestamista = st.sidebar.text_input('Depositante Prestamista')
-tomador = st.sidebar.text_input('Tomador')
-comitente_tomador = st.sidebar.text_input('Cuenta Comitente Tomador')
-depositante_tomador = st.sidebar.text_input('Depositante Tomador')
-especie = st.sidebar.text_input('Especie')
-codigo_especie = st.sidebar.text_input('Código de Especie')
-valor_nominal = st.sidebar.text_input('Valor Nominal')
-tasa_anual = st.sidebar.text_input('Tasa Anual (%)')
-plazo = st.sidebar.text_input('Plazo (meses)')
-cuenta_bancaria = st.sidebar.text_input('Cuenta Bancaria')
-cuit = st.sidebar.text_input('CUIT')
-domicilio = st.sidebar.text_input('Domicilio')
+# Imagen del logo
+logo_base64 = load_logo()
+st.markdown(f'<img src="data:image/svg+xml;base64,{logo_base64}" class="logo">', unsafe_allow_html=True)
 
-if st.sidebar.button('Generar PDF'):
-    if tipo_prestamo == 'COHEN TOMADOR':
-        pdf_bytes = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == 'COHEN PRESTAMISTA':
-        pdf_bytes = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == 'COHEN TOMADOR T-BILLS':
+# Campos del formulario
+formulario_tipo = st.selectbox("Seleccione el tipo de formulario", ("COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES"))
+mes = st.text_input("Mes")
+dia = st.text_input("Día")
+cliente = st.text_input("Cliente")
+interes = st.text_input("Interés (%)")
+prestamista = st.text_input("Prestamista")
+comitente_prestamista = st.text_input("Comitente Prestamista")
+depositante_prestamista = st.text_input("Depositante Prestamista")
+tomador = st.text_input("Tomador")
+comitente_tomador = st.text_input("Comitente Tomador")
+depositante_tomador = st.text_input("Depositante Tomador")
+especie = st.text_input("Especie")
+codigo_especie = st.text_input("Código Especie")
+valor_nominal = st.number_input("Valor Nominal", min_value=0, value=0, step=1)
+tasa_anual = st.text_input("Tasa Anual (%)")
+plazo = st.number_input("Plazo (meses)", min_value=0, value=0, step=1)
+cuenta_bancaria = st.text_input("Cuenta Bancaria")
+cuit = st.text_input("CUIT")
+domicilio = st.text_input("Domicilio")
+
+# Botón para generar el PDF
+if st.button("Generar PDF"):
+    if formulario_tipo == "COHEN TOMADOR":
+        pdf_content = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+    elif formulario_tipo == "COHEN PRESTAMISTA":
+        pdf_content = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+    elif formulario_tipo == "COHEN TOMADOR T-BILLS":
         valor_nominal_texto = number_to_text(valor_nominal)
         plazo_texto = number_to_text(plazo)
-        pdf_bytes = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    elif tipo_prestamo == 'COHEN PRESTAMISTA T-BILLS':
+        pdf_content = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+    elif formulario_tipo == "COHEN PRESTAMISTA T-BILLS":
         valor_nominal_texto = number_to_text(valor_nominal)
         plazo_texto = number_to_text(plazo)
-        pdf_bytes = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-    else:
-        cuit_prestamista = cuit
-        domicilio_prestamista = domicilio
-        cuit_tomador = st.sidebar.text_input('CUIT Tomador')
-        domicilio_tomador = st.sidebar.text_input('Domicilio Tomador')
+        pdf_content = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+    elif formulario_tipo == "PRESTAMO ENTRE CLIENTES":
         valor_nominal_texto = number_to_text(valor_nominal)
         plazo_texto = number_to_text(plazo)
-        pdf_bytes = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
+        pdf_content = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
     
-    st.download_button(label='Descargar PDF', data=pdf_bytes, file_name='oferta_prestamo.pdf', mime='application/pdf')
+    st.download_button(label="Descargar PDF", data=pdf_content, file_name="documento.pdf", mime="application/pdf")
+
+# Estilo CSS personalizado
+st.markdown("""
+<style>
+    .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+    .stButton button {
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+""", unsafe_allow_html=True)
