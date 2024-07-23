@@ -484,7 +484,7 @@ dia = st.selectbox("Día", list(range(1, 32)))
 
 # Otros campos necesarios
 cliente = st.text_input("Cliente", "")
-interes = st.text_input("Interés", "")
+interes = st.text_input("Tasa de Penalidad - Interés", "")
 prestamista = st.text_input("Prestamista", "")
 comitente_prestamista = st.text_input("Comitente Prestamista", "")
 depositante_prestamista = st.text_input("Depositante Prestamista", "")
