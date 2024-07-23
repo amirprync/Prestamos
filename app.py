@@ -489,7 +489,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("Generador de PDF de Oferta de Préstamo")
+st.title("Generar archivo PDF para oferta de préstamos")
 
 tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
 mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
@@ -548,4 +548,3 @@ if st.button("Generar PDF"):
             enviar_email(pdf_data, "oferta_prestamo.pdf")
 
 st.markdown("---")
-st.markdown("Desarrollado por el equipo de TI de Cohen S.A.")
