@@ -7,44 +7,6 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
-# Función para cargar y convertir el logo a base64
-def load_logo():
-    logo_path = "/mnt/data/BaseStreamer.svg"
-    with open(logo_path, "rb") as logo_file:
-        logo_base64 = base64.b64encode(logo_file.read()).decode("utf-8")
-    return logo_base64
-
-logo_base64 = load_logo()
-
-# CSS para mejorar el estilo de la página
-st.markdown("""
-    <style>
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        .logo {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 150px;
-        }
-        .title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .label {
-            font-weight: bold;
-        }
-        .stButton button {
-            display: block;
-            margin: auto;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
     def header(self):
@@ -333,7 +295,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
     return pdf.output(dest='S').encode('latin1')
 
 # Función para generar el PDF para PRESTAMO ENTRE CLIENTES
-def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador):
+def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
     pdf.set_left_margin(10)
@@ -344,19 +306,18 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
-            f"{sanitize_text(cliente)}\n"
+            f"{sanitize_text(prestamista)}\n"
             f"Presente\n\n"
             f"Ref.: Oferta de Préstamo\n\n"
             f"De nuestra mayor consideración:\n"
-            f"Conforme a las conversaciones mantenidas, nos dirigimos a {sanitize_text(cliente)} (en adelante, el 'Prestamista'), a fin de formular con carácter de irrevocable la presente Oferta de Préstamo de Valores Negociables (en adelante, la 'Oferta de Préstamo').\n"
+            f"Conforme a las conversaciones mantenidas, nos dirigimos a {sanitize_text(prestamista)} (en adelante, el 'Prestamista'), a fin de formular con carácter de irrevocable la presente Oferta de Préstamo de Valores Negociables (en adelante, la 'Oferta de Préstamo').\n"
             f"A los efectos de la presente Oferta de Préstamo, el Prestamista y {sanitize_text(tomador)} (en adelante, el 'Tomador') serán denominados en forma conjunta como las 'Partes'.\n"
             f"PRIMERO: El Tomador ofrece al Prestamista realizar un contrato de préstamo bajo el cual el Prestamista entregará al Tomador, en calidad de préstamo, los Valores Negociables que se indican en el Anexo I a la presente Oferta de Préstamo, bajo el cual se establecen los términos y condiciones que regirán dicho contrato.\n"
             f"SEGUNDO: En caso que el Prestamista decida aceptar la presente Oferta de Préstamo, las obligaciones y derechos de las Partes serán estrictamente los que resultan del Anexo I adjunto a la presente.\n"
             f"TERCERO: La presente Oferta de Préstamo tiene vigencia por el plazo de 5 (cinco) días hábiles, considerándose aceptada si en o antes de dicho plazo, el Prestamista realiza la transferencia de los Valores Negociables a la cuenta comitente del Tomador, conforme se establece en la cláusula PRIMERA del Anexo I adjunto.\n"
-            f"CUARTO: El Tomador pagará al Prestamista una tasa de penalidad del {sanitize_text(interes)}% mensual por cada día de retardo en el cumplimiento de su obligación de restituir los Valores Negociables.\n"
             f"Atentamente,\n\n"
             f"____________________________\n"
-            f"Por {sanitize_text(prestamista)}\n"
+            f"Por {sanitize_text(tomador)}\n"
             f"Aclaración:\n"
             f"Carácter:\n\n"
             f"____________________________\n"
@@ -366,11 +327,11 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
             f"ANEXO I\n"
             f"OFERTA DE PRÉSTAMO DE VALORES NEGOCIABLES\n"
             f"En el supuesto de ser aceptada la Oferta de Préstamo en los términos aquí previstos, de la cual la presente forma parte como Anexo I, se entenderá que se ha perfeccionado el siguiente contrato de préstamo (en adelante, el 'Contrato de Préstamo' o el 'Contrato' indistintamente), y tendrá como partes a:\n"
-            f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit_prestamista)}, con domicilio en {sanitize_text(domicilio_prestamista)} (en adelante, el 'Prestamista'), por una parte, y\n"
-            f"b) {sanitize_text(tomador)}, CUIT {sanitize_text(cuit_tomador)}, con domicilio en {sanitize_text(domicilio_tomador)} (en adelante, el 'Tomador'), por la otra.\n\n"
+            f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit)}, con domicilio en {sanitize_text(domicilio)} (en adelante, el 'Prestamista'), por una parte, y\n"
+            f"b) por la otra, {sanitize_text(tomador)}, CUIT {sanitize_text(cuit)}, con domicilio en {sanitize_text(domicilio)} (en adelante, el 'Tomador' y conjuntamente con el Prestamista, las 'Partes').\n\n"
             f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: {sanitize_text(especie)} por un valor nominal de {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}) con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n"
-            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en {sanitize_text(depositante_prestamista)} (en adelante, la 'Cuenta del Prestamista').\n"
-            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en {sanitize_text(depositante_tomador)} (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por {sanitize_text(depositante_tomador)} correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n"
+            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en COHEN S.A. (en adelante, la 'Cuenta del Prestamista').\n"
+            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en COHEN S.A. (Agente de Negociación, Liquidación y Compensación Integral N° 21) (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n"
             f"SEGUNDA: El presente préstamo se establece por un plazo de {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(tasa_anual)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n"
             f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II. El mismo será calculado de acuerdo al Tipo de Cambio [ ] del día de pago.\n"
             f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n"
@@ -378,15 +339,14 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
             f"QUINTA: El Tomador se obliga a restituir los Valores Negociables al vencimiento del Plazo.\n"
             f"SEXTA: El Tomador se compromete a realizar todos aquellos actos necesarios para la conservación de los Valores Negociables, obligándose a restituirlos a la finalización del Plazo en igual cantidad y especie que los recibiera.\n"
             f"SÉPTIMA: El Tomador pagará todos los gastos que genere la operatoria objeto del presente Contrato.\n"
-            f"OCTAVA: Todos los pagos que corresponda percibir por los Valores Negociables dados en préstamo corresponderán al Prestamista. En tal sentido, el Tomador deberá transferirlos a la Cuenta del Prestamista el día hábil posterior a su percepción.\n"
-            f"NOVENA: La obligación de restituir los Valores Negociables no requiere interpelación judicial o extrajudicial alguna, configurándose su incumplimiento de pleno derecho por el solo incumplimiento material de la obligación de que se trate en la fecha estipulada, dando derecho al Prestamista a considerar vencido el Plazo y exigir la inmediata cancelación del Contrato de Préstamo y de los intereses devengados bajo el mismo.\n"
-            f"DÉCIMA: El Prestamista asume el riesgo por las oscilaciones propias de los mercados que determinen variaciones de precios y/o cancelaciones de los Valores Negociables.\n"
-            f"DÉCIMO PRIMERA: El tomador declara conocer que la falta de devolución de los Valores Negociables en tiempo y forma generará una penalidad del {sanitize_text(interes)}% mensual por cada día de retardo en el cumplimiento de su obligación de restituir.\n"
-            f"DÉCIMO SEGUNDA: Estas operaciones no gozan del sistema de garantía de liquidación de Bolsas y Mercados Argentinos S.A. (BYMA).\n"
-            f"DÉCIMO TERCERA: El Prestamista no asume ningún tipo de responsabilidad por las situaciones de mercado o incumplimiento por parte del emisor que se pudieran dar en relación a los Valores Negociables mientras se encuentren en poder del Tomador. Asimismo, el Prestamista no garantiza ningún tipo de beneficio económico como consecuencia de la utilización de los mismos.\n"
-            f"DÉCIMO CUARTA: El Tomador no podrá ceder su posición contractual bajo el Contrato, ni ninguno de los derechos emergentes del mismo sin el consentimiento previo y escrito otorgado por el Prestamista.\n"
-            f"DÉCIMO QUINTA: Toda modificación a este Contrato deberá ser realizada por las Partes por escrito y conforme las mismas formalidades que se observan en este Contrato.\n"
-            f"DÉCIMO SEXTA: Para todos los efectos legales derivados de esta Oferta, las Partes constituyen sus domicilios en los indicados en el segundo párrafo del presente Anexo, donde se tendrán por válidas todas las notificaciones. Toda controversia relacionada al presente Contrato será resuelta en forma inapelable por el Tribunal de Arbitraje General de la Bolsa de Comercio de Buenos Aires por las reglas del arbitraje de derecho, que las partes declaran conocer y aceptar.\n"
+            f"OCTAVA: La obligación de restituir los Valores Negociables no requiere interpelación judicial o extrajudicial alguna, configurándose su incumplimiento de pleno derecho por el solo incumplimiento material de la obligación de que se trate en la fecha estipulada, dando derecho al Prestamista a considerar vencido el Plazo y exigir la inmediata cancelación del Contrato de Préstamo y de los intereses devengados bajo el mismo.\n"
+            f"NOVENA: El Prestamista asume el riesgo por las oscilaciones propias de los mercados que determinen variaciones de precios y/o cancelaciones de los Valores Negociables.\n"
+            f"DÉCIMA: El tomador declara conocer que la falta de devolución de los Valores Negociables en tiempo y forma generará una penalidad del {sanitize_text(interes)}% mensual por cada día de retardo en el cumplimiento de su obligación de restituir.\n"
+            f"DÉCIMO PRIMERA: Estas operaciones no gozan del sistema de garantía de liquidación de Bolsas y Mercados Argentinos S.A. (BYMA).\n"
+            f"DÉCIMO SEGUNDA: El Prestamista no asume ningún tipo de responsabilidad por las situaciones de mercado o incumplimiento por parte del emisor que se pudieran dar en relación a los Valores Negociables mientras se encuentren en poder del Tomador. Asimismo, el Prestamista no garantiza ningún tipo de beneficio económico como consecuencia de la utilización de los mismos.\n"
+            f"DÉCIMO TERCERA: El Tomador no podrá ceder su posición contractual bajo el Contrato, ni ninguno de los derechos emergentes del mismo sin el consentimiento previo y escrito otorgado por el Prestamista.\n"
+            f"DÉCIMO CUARTA: Toda modificación a este Contrato deberá ser realizada por las Partes por escrito y conforme las mismas formalidades que se observan en este Contrato.\n"
+            f"DÉCIMO QUINTA: Para todos los efectos legales derivados de esta Oferta, las Partes constituyen sus domicilios en los indicados en el segundo párrafo del presente Anexo, donde se tendrán por válidas todas las notificaciones. Toda controversia relacionada al presente Contrato será resuelta en forma inapelable por el Tribunal de Arbitraje General de la Bolsa de Comercio de Buenos Aires por las reglas del arbitraje de derecho, que las partes declaran conocer y aceptar.\n"
             f"\nANEXO II\n"
             f"Condiciones de la operación de Préstamo de Títulos Valores:\n"
             f"Prestamista: {sanitize_text(prestamista)}, cuenta Comitente N° {sanitize_text(comitente_prestamista)} Depositante N° {sanitize_text(depositante_prestamista)}.\n"
@@ -402,83 +362,45 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
-# Función para enviar el correo electrónico
-def send_email(subject, body, to, attachment):
-    from_address = 'tuemail@gmail.com'
-    password = 'tucontraseña'
-
-    msg = MIMEMultipart()
-    msg['From'] = from_address
-    msg['To'] = to
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
-
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment)
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="oferta_prestamo.pdf"')
-
-    msg.attach(part)
-
-    with smtplib.SMTP('smtp.gmail.com', 587) as server:
-        server.starttls()
-        server.login(from_address, password)
-        server.sendmail(from_address, to, msg.as_string())
-
-# Función principal de la aplicación
+# Interfaz de Streamlit
 def main():
-    st.markdown("<div class='container'>", unsafe_allow_html=True)
-    st.image(f"data:image/svg+xml;base64,{logo_base64}", width=200)
-    st.markdown("<h1 class='title'>Generador de Contratos de Préstamo</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Generador de Contratos de Préstamo</h1>", unsafe_allow_html=True)
+    st.write("Complete los detalles a continuación para generar el contrato de préstamo.")
 
-    # Campos del formulario
-    form = st.form(key='form')
-    tipo_prestamo = form.selectbox('Seleccione el tipo de préstamo', ['COHEN TOMADOR', 'COHEN PRESTAMISTA', 'COHEN TOMADOR T-BILLS', 'COHEN PRESTAMISTA T-BILLS', 'PRESTAMO ENTRE CLIENTES'])
-    mes = form.text_input('Mes')
-    dia = form.text_input('Día')
-    cliente = form.text_input('Cliente')
-    interes = form.text_input('Interés (%)')
-    prestamista = form.text_input('Prestamista')
-    comitente_prestamista = form.text_input('Comitente Prestamista')
-    depositante_prestamista = form.text_input('Depositante Prestamista')
-    tomador = form.text_input('Tomador')
-    comitente_tomador = form.text_input('Comitente Tomador')
-    depositante_tomador = form.text_input('Depositante Tomador')
-    especie = form.text_input('Especie')
-    codigo_especie = form.text_input('Código Especie')
-    valor_nominal = form.text_input('Valor Nominal')
-    tasa_anual = form.text_input('Tasa Anual (%)')
-    plazo = form.text_input('Plazo (meses)')
-    cuenta_bancaria = form.text_input('Cuenta Bancaria')
-    cuit = form.text_input('CUIT')
-    domicilio = form.text_input('Domicilio')
-    email = form.text_input('Email')
+    mes = st.text_input("Mes")
+    dia = st.text_input("Día")
+    cliente = st.text_input("Cliente")
+    interes = st.text_input("Interés")
+    prestamista = st.text_input("Prestamista")
+    comitente_prestamista = st.text_input("Comitente Prestamista")
+    depositante_prestamista = st.text_input("Depositante Prestamista")
+    tomador = st.text_input("Tomador")
+    comitente_tomador = st.text_input("Comitente Tomador")
+    depositante_tomador = st.text_input("Depositante Tomador")
+    especie = st.text_input("Especie")
+    codigo_especie = st.text_input("Código Especie")
+    valor_nominal = st.number_input("Valor Nominal", min_value=0, step=1)
+    tasa_anual = st.text_input("Tasa Anual")
+    plazo = st.number_input("Plazo", min_value=0, step=1)
+    cuenta_bancaria = st.text_input("Cuenta Bancaria")
+    cuit = st.text_input("CUIT")
+    domicilio = st.text_input("Domicilio")
 
-    submit_button = form.form_submit_button(label='Generar PDF')
+    tipo_contrato = st.selectbox("Tipo de Contrato", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRÉSTAMO ENTRE CLIENTES"])
 
-    if submit_button:
-        valor_nominal_texto = number_to_text(valor_nominal)
-        plazo_texto = number_to_text(plazo)
-        
-        if tipo_prestamo == 'COHEN TOMADOR':
+    if st.button("Generar PDF"):
+        if tipo_contrato == "COHEN TOMADOR":
             pdf_bytes = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-        elif tipo_prestamo == 'COHEN PRESTAMISTA':
+        elif tipo_contrato == "COHEN PRESTAMISTA":
             pdf_bytes = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-        elif tipo_prestamo == 'COHEN TOMADOR T-BILLS':
-            pdf_bytes = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-        elif tipo_prestamo == 'COHEN PRESTAMISTA T-BILLS':
-            pdf_bytes = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
-        elif tipo_prestamo == 'PRESTAMO ENTRE CLIENTES':
+        elif tipo_contrato == "COHEN TOMADOR T-BILLS":
+            pdf_bytes = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, number_to_text(valor_nominal), tasa_anual, plazo, number_to_text(plazo), cuenta_bancaria, cuit, domicilio)
+        elif tipo_contrato == "COHEN PRESTAMISTA T-BILLS":
+            pdf_bytes = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, number_to_text(valor_nominal), tasa_anual, plazo, number_to_text(plazo), cuenta_bancaria, cuit, domicilio)
+        elif tipo_contrato == "PRÉSTAMO ENTRE CLIENTES":
             pdf_bytes = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
         
-        st.download_button(label='Descargar PDF', data=pdf_bytes, file_name='oferta_prestamo.pdf', mime='application/octet-stream')
+        st.download_button(label="Descargar PDF", data=pdf_bytes, file_name="contrato_prestamo.pdf", mime="application/pdf")
 
-        if email:
-            send_email('Oferta de Préstamo', 'Adjunto encontrará la oferta de préstamo generada.', email, pdf_bytes)
-            st.success('Email enviado exitosamente.')
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
