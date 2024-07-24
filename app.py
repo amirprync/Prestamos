@@ -514,7 +514,7 @@ if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS
     domicilio_tomador = st.text_input("Domicilio Tomador")
     cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
 
-if st.button("Generar PDF y Enviar por Correo"):
+if st.button("Generar PDF"):
     with st.spinner("Generando PDF y enviando por correo..."):
         # Convertir los valores de los selectbox a formato adecuado
         interes = int(interes.replace('%', ''))
