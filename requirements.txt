@@ -10,3 +10,4 @@ pdfkit
 fpdf
 inflect
 num2words
+fpdf2
