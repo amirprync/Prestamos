@@ -514,8 +514,8 @@ if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS
     domicilio_tomador = st.text_input("Domicilio Tomador")
     cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
 
-if st.button("Generar PDF"):
-    with st.spinner("Generando PDF..."):
+if st.button("Generar PDF y Enviar por Correo"):
+    with st.spinner("Generando PDF y enviando por correo..."):
         # Convertir los valores de los selectbox a formato adecuado
         interes = int(interes.replace('%', ''))
         tasa_anual = int(tasa_anual.replace('%', ''))
@@ -526,36 +526,23 @@ if st.button("Generar PDF"):
             plazo_texto = number_to_text(plazo)
 
             if tipo_prestamo == "COHEN TOMADOR":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN PRESTAMISTA":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN PRESTAMISTA T-BILLS":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES T-BILLS":
-                valor_nominal_texto = number_to_text(valor_nominal)
-                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
             
-            st.success("PDF generado con éxito")
-            st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
+            # Enviar el correo automáticamente
+            enviar_email(pdf_data, "oferta_prestamo.pdf")
             
-            if st.button("Enviar por correo"):
-                with st.spinner("Enviando correo..."):
-                    enviar_email(pdf_data, "oferta_prestamo.pdf")
+            st.success("PDF generado y enviado por correo con éxito")
+            st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
         
         except Exception as e:
-            st.error(f"Error al generar el PDF: {str(e)}")
+            st.error(f"Error al generar el PDF o enviar el correo: {str(e)}")
