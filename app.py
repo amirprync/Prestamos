@@ -476,101 +476,72 @@ import streamlit as st
 
 st.set_page_config(page_title="Generador de Oferta de Préstamo", layout="wide")
 
-# Estilo personalizado
 st.markdown("""
 <style>
     .main {
-        background-color: #f0f2f6;
+        max-width: 1200px;
+        margin: 0 auto;
         padding: 2rem;
     }
     .stButton>button {
         width: 100%;
-        background-color: #4CAF50;
+        background-color: #0066cc;
         color: white;
         font-weight: bold;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem;
         border: none;
         border-radius: 4px;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s;
     }
     .stButton>button:hover {
-        background-color: #45a049;
+        background-color: #0052a3;
     }
     .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>select {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
         border-radius: 4px;
-    }
-    .css-1d391kg {
-        padding-top: 3rem;
+        border: 1px solid #ccc;
     }
     h1 {
-        color: #2c3e50;
+        color: #333;
         text-align: center;
         margin-bottom: 2rem;
-    }
-    .stExpander {
-        background-color: white;
-        border-radius: 4px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        margin-bottom: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("Generador de Oferta de Préstamo")
+st.title("Generar archivo PDF para oferta de préstamos")
 
-# Crear columnas para una mejor organización
-col1, col2 = st.columns(2)
-
-with col1:
-    with st.expander("Información General", expanded=True):
-        tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
-        dia = st.selectbox("Día", list(range(1, 32)))
-        mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
-        cliente = st.text_input("Cliente")
-        interes = st.selectbox("Tasa de Penalidad - Interés", [f"{i}%" for i in range(1, 21)])
-
-with col2:
-    with st.expander("Detalles del Préstamo", expanded=True):
-        prestamista = st.text_input("Prestamista")
-        comitente_prestamista = st.number_input("Número de comitente Prestamista", min_value=0, step=1)
-        depositante_prestamista = st.text_input("Depositante prestamista")
-        tomador = st.text_input("Tomador")
-        comitente_tomador = st.number_input("Número de comitente tomador", min_value=0, step=1)
-
-with st.expander("Información Adicional", expanded=True):
-    col3, col4 = st.columns(2)
-    
-    with col3:
-        depositante_tomador = st.text_input("Depositante tomador")
-        especie = st.text_input("Especie")
-        codigo_especie = st.text_input("Código Especie")
-        valor_nominal = st.number_input("Valor Nominal", min_value=0, step=1)
-        tasa_anual = st.selectbox("Tasa Anual", [f"{i}%" for i in range(1, 21)])
-    
-    with col4:
-        plazo = st.selectbox("Plazo (en meses)", list(range(1, 13)))
-        cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista")
-        cuit = st.number_input("CUIT", min_value=0, step=1)
-        domicilio = st.text_input("Domicilio")
+tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
+dia = st.selectbox("Día", list(range(1, 32)))
+mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
+cliente = st.text_input("Cliente")
+interes = st.selectbox("Tasa de Penalidad - Interés", [f"{i}%" for i in range(1, 21)])
+prestamista = st.text_input("Prestamista")
+comitente_prestamista = st.number_input("Número de comitente Prestamista", min_value=0, step=1)
+depositante_prestamista = st.text_input("Depositante prestamista")
+tomador = st.text_input("Tomador")
+comitente_tomador = st.number_input("Número de comitente tomador", min_value=0, step=1)
+depositante_tomador = st.text_input("Depositante tomador")
+especie = st.text_input("Especie")
+codigo_especie = st.text_input("Código Especie")
+valor_nominal = st.number_input("Valor Nominal", min_value=0, step=1)
+tasa_anual = st.selectbox("Tasa Anual", [f"{i}%" for i in range(1, 21)])
+plazo = st.selectbox("Plazo (en meses)", list(range(1, 13)))
+cuenta_bancaria = st.text_input("Cuenta Bancaria del Prestamista")
+cuit = st.number_input("CUIT", min_value=0, step=1)
+domicilio = st.text_input("Domicilio")
 
 if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"]:
-    with st.expander("Información para Préstamos entre Clientes", expanded=True):
-        col5, col6 = st.columns(2)
-        with col5:
-            domicilio_prestamista = st.text_input("Domicilio Prestamista")
-            cuit_prestamista = st.number_input("CUIT Prestamista", min_value=0, step=1)
-        with col6:
-            domicilio_tomador = st.text_input("Domicilio Tomador")
-            cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
+    st.markdown("### Información adicional para préstamos entre clientes")
+    domicilio_prestamista = st.text_input("Domicilio Prestamista")
+    cuit_prestamista = st.number_input("CUIT Prestamista", min_value=0, step=1)
+    domicilio_tomador = st.text_input("Domicilio Tomador")
+    cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
 
 if st.button("Generar PDF"):
     with st.spinner("Generando PDF..."):
         # Tu código actual para generar el PDF
         pass
-
+    
     st.success("PDF generado con éxito")
     st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
     
