@@ -364,82 +364,49 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
-# Crear un diccionario de funciones para generar los PDFs
-pdf_generators = {
-    'COHEN_TOMADOR': generate_pdf_cohen_tomador,
-    'COHEN_PRESTAMISTA': generate_pdf_cohen_prestamista,
-    'COHEN_TOMADOR_TBILLS': generate_pdf_cohen_tomador_tbills,
-    'COHEN_PRESTAMISTA_TBILLS': generate_pdf_cohen_prestamista_tbills,
-    'PRESTAMO_ENTRE_CLIENTES': generate_pdf_prestamo_entre_clientes,
-}
-
 # Configuración de Streamlit
-st.title("Generador de PDF de Ofertas de Préstamo")
+st.title("Generador de PDFs de Ofertas de Préstamo")
+st.write("Complete la información a continuación para generar el PDF de la oferta de préstamo.")
 
-# Entrada del usuario
-prestamo_tipo = st.selectbox("Seleccione el tipo de préstamo", list(pdf_generators.keys()))
-mes = st.text_input("Mes", "Julio")
-dia = st.text_input("Día", "15")
-cliente = st.text_input("Cliente", "Juan Perez")
-interes = st.text_input("Interés (%)", "5")
-prestamista = st.text_input("Prestamista", "COHEN S.A.")
-comitente_prestamista = st.text_input("Comitente Prestamista", "123456")
-depositante_prestamista = st.text_input("Depositante Prestamista", "654321")
-tomador = st.text_input("Tomador", "COHEN S.A.")
-comitente_tomador = st.text_input("Comitente Tomador", "123456")
-depositante_tomador = st.text_input("Depositante Tomador", "654321")
-especie = st.text_input("Especie", "Bonos")
-codigo_especie = st.text_input("Código Especie", "B123")
-valor_nominal = st.number_input("Valor Nominal", min_value=0)
-tasa_anual = st.text_input("Tasa Anual (%)", "5")
-plazo = st.number_input("Plazo (meses)", min_value=1)
-cuenta_bancaria = st.text_input("Cuenta Bancaria", "123456789")
-cuit = st.text_input("CUIT", "20-12345678-9")
-domicilio = st.text_input("Domicilio", "Calle Falsa 123")
-cuit_tomador = st.text_input("CUIT Tomador", "20-87654321-0")
-domicilio_tomador = st.text_input("Domicilio Tomador", "Calle Verdadera 456")
+# Formulario de entrada de datos
+form = st.form(key='data_form')
+tipo_prestamo = form.selectbox("Tipo de Préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES"])
+mes = form.text_input("Mes")
+dia = form.text_input("Día")
+cliente = form.text_input("Cliente")
+interes = form.text_input("Interés")
+prestamista = form.text_input("Prestamista")
+comitente_prestamista = form.text_input("Comitente Prestamista")
+depositante_prestamista = form.text_input("Depositante Prestamista")
+tomador = form.text_input("Tomador")
+comitente_tomador = form.text_input("Comitente Tomador")
+depositante_tomador = form.text_input("Depositante Tomador")
+especie = form.text_input("Especie")
+codigo_especie = form.text_input("Código Especie")
+valor_nominal = form.number_input("Valor Nominal", min_value=0)
+tasa_anual = form.number_input("Tasa Anual", min_value=0.0, format="%.2f")
+plazo = form.number_input("Plazo (meses)", min_value=0)
+cuenta_bancaria = form.text_input("Cuenta Bancaria del Prestamista")
+cuit = form.text_input("CUIT")
+domicilio = form.text_input("Domicilio")
+cuit_prestamista = form.text_input("CUIT Prestamista")
+domicilio_prestamista = form.text_input("Domicilio Prestamista")
+cuit_tomador = form.text_input("CUIT Tomador")
+domicilio_tomador = form.text_input("Domicilio Tomador")
 
-# Generar el PDF
-if st.button("Generar PDF"):
-    if prestamo_tipo in pdf_generators:
-        pdf_data = pdf_generators[prestamo_tipo](mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-        st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
+submit = form.form_submit_button(label='Generar PDF')
 
-# Opcional: función para enviar el PDF por correo electrónico
-def send_email(subject, body, to_email, attachment):
-    from_email = "tu_correo@example.com"
-    from_password = "tu_contraseña"
-
-    msg = MIMEMultipart()
-    msg["From"] = from_email
-    msg["To"] = to_email
-    msg["Subject"] = subject
-
-    msg.attach(MIMEText(body, "plain"))
-
-    part = MIMEBase("application", "octet-stream")
-    part.set_payload(attachment)
-    encoders.encode_base64(part)
-    part.add_header("Content-Disposition", f"attachment; filename= {file_name}")
-
-    msg.attach(part)
-
-    server = smtplib.SMTP("smtp.example.com", 587)
-    server.starttls()
-    server.login(from_email, from_password)
-    text = msg.as_string()
-    server.sendmail(from_email, to_email, text)
-    server.quit()
-
-# Formulario para enviar el PDF por correo electrónico
-st.header("Enviar PDF por correo electrónico")
-subject = st.text_input("Asunto del correo", "Oferta de Préstamo")
-body = st.text_area("Cuerpo del correo", "Adjunto encontrará la oferta de préstamo.")
-to_email = st.text_input("Correo electrónico del destinatario", "destinatario@example.com")
-
-if st.button("Enviar correo"):
-    if 'pdf_data' in locals():
-        send_email(subject, body, to_email, pdf_data)
-        st.success("Correo enviado con éxito")
-    else:
-        st.error("Primero genere el PDF")
+# Generar y mostrar el PDF
+if submit:
+    if tipo_prestamo == "COHEN TOMADOR":
+        pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+    elif tipo_prestamo == "COHEN PRESTAMISTA":
+        pdf_data = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
+    elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
+        pdf_data = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, number_to_text(valor_nominal), tasa_anual, plazo, number_to_text(plazo), cuenta_bancaria, cuit, domicilio)
+    elif tipo_prestamo == "COHEN PRESTAMISTA T-BILLS":
+        pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, number_to_text(valor_nominal), tasa_anual, plazo, number_to_text(plazo), cuenta_bancaria, cuit, domicilio)
+    elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
+        pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
+    
+    st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
