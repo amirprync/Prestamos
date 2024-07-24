@@ -437,8 +437,8 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, pres
 def enviar_email(pdf_data, file_name):
     remitente = 'gallo@cohen.com.ar'
     destinatario = 'ddjj@cohen.com.ar'
-    asunto = 'Archivo generado'
-    cuerpo = 'Adjunto el archivo generado.'
+    asunto = 'Carta Oferta Prestamo'
+    cuerpo = 'Adjunto carta de prestamo.'
 
     # Configuración del servidor SMTP de Gmail
     servidor_smtp = 'smtp.gmail.com'
