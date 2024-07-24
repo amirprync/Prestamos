@@ -270,7 +270,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
             f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n"
             f"CUARTA: El Prestamista podrá solicitar la cancelación anticipada del préstamo de los Valores Negociables antes del vencimiento del Plazo, para lo cual deberá notificar por escrito al Tomador con una antelación de 48 horas hábiles a la efectiva fecha de cancelación. En caso de ejercerse tal derecho, el Tomador abonará en forma proporcional el importe de la contraprestación convenida en la cláusula SEGUNDA.\n"
             f"QUINTA: El Tomador se obliga a restituir los Valores Negociables al vencimiento del Plazo.\n"
-            f"SEXTA: El Tomador se compromete a realizar todos aquellos actos necesarios para la conservación de los Valores Negociables, obligándose a restituirlos a la finalización del Plazo en igual cantidad y especie que los recibiera.\n"
+            f"SEXTA: El Tomador se compromete a realizar todos aquellos actos necesarios para la conservación de los Valores Negociables, obligándose a restituirlos a la finalización del Plazo en igual cantidad a la que los recibiera.\n"
             f"SÉPTIMA: El Tomador pagará todos los gastos que genere la operatoria objeto del presente Contrato.\n"
             f"OCTAVA: La obligación de restituir los Valores Negociables no requiere interpelación judicial o extrajudicial alguna, configurándose su incumplimiento de pleno derecho por el solo incumplimiento material de la obligación de que se trate en la fecha estipulada, dando derecho al Prestamista a considerar vencido el Plazo y exigir la inmediata cancelación del Contrato de Préstamo y de los intereses devengados bajo el mismo.\n"
             f"NOVENA: El tomador declara conocer que la falta de devolución de los Valores Negociables en tiempo y forma generará una penalidad del {sanitize_text(interes)}% mensual por cada día de retardo en el cumplimiento de su obligación de restituir.\n"
@@ -363,89 +363,3 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
 
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
-
-# Función para enviar el correo electrónico con el archivo adjunto
-def send_email(to_email, subject, body, attachment_path, attachment_name):
-    from_email = 'your_email@example.com'
-    from_password = 'your_password'
-
-    msg = MIMEMultipart()
-    msg['From'] = from_email
-    msg['To'] = to_email
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
-
-    with open(attachment_path, 'rb') as attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment.read())
-        encoders.encode_base64(part)
-        part.add_header('Content-Disposition', f'attachment; filename={attachment_name}')
-        msg.attach(part)
-
-    server = smtplib.SMTP('smtp.example.com', 587)
-    server.starttls()
-    server.login(from_email, from_password)
-    text = msg.as_string()
-    server.sendmail(from_email, to_email, text)
-    server.quit()
-
-def main():
-    st.title("Generador de PDF para Préstamos")
-
-    mes = st.text_input("Mes")
-    dia = st.text_input("Día")
-    cliente = st.text_input("Cliente")
-    interes = st.text_input("Interés")
-    prestamista = st.text_input("Prestamista")
-    comitente_prestamista = st.text_input("Comitente Prestamista")
-    depositante_prestamista = st.text_input("Depositante Prestamista")
-    tomador = st.text_input("Tomador")
-    comitente_tomador = st.text_input("Comitente Tomador")
-    depositante_tomador = st.text_input("Depositante Tomador")
-    especie = st.text_input("Especie")
-    codigo_especie = st.text_input("Código de Especie")
-    valor_nominal = st.number_input("Valor Nominal", min_value=0)
-    tasa_anual = st.number_input("Tasa Anual", min_value=0.0)
-    plazo = st.number_input("Plazo (meses)", min_value=0)
-    cuenta_bancaria = st.text_input("Cuenta Bancaria")
-    cuit = st.text_input("CUIT")
-    domicilio = st.text_input("Domicilio")
-
-    if st.button("Generar PDF - COHEN TOMADOR"):
-        pdf_content = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-        st.download_button(label="Descargar PDF", data=pdf_content, file_name="cohen_tomador.pdf", mime="application/pdf")
-
-    if st.button("Generar PDF - COHEN PRESTAMISTA"):
-        pdf_content = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio)
-        st.download_button(label="Descargar PDF", data=pdf_content, file_name="cohen_prestamista.pdf", mime="application/pdf")
-
-    if st.button("Generar PDF - COHEN TOMADOR T-BILLS"):
-        pdf_content = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal, tasa_anual, plazo, plazo, cuenta_bancaria, cuit, domicilio)
-        st.download_button(label="Descargar PDF", data=pdf_content, file_name="cohen_tomador_tbills.pdf", mime="application/pdf")
-
-    if st.button("Generar PDF - COHEN PRESTAMISTA T-BILLS"):
-        pdf_content = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal, tasa_anual, plazo, plazo, cuenta_bancaria, cuit, domicilio)
-        st.download_button(label="Descargar PDF", data=pdf_content, file_name="cohen_prestamista_tbills.pdf", mime="application/pdf")
-
-    if st.button("Generar PDF - PRESTAMO ENTRE CLIENTES"):
-        cuit_prestamista = st.text_input("CUIT Prestamista")
-        domicilio_prestamista = st.text_input("Domicilio Prestamista")
-        cuit_tomador = st.text_input("CUIT Tomador")
-        domicilio_tomador = st.text_input("Domicilio Tomador")
-        
-        pdf_content = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
-        st.download_button(label="Descargar PDF", data=pdf_content, file_name="prestamo_entre_clientes.pdf", mime="application/pdf")
-
-    to_email = st.text_input("Correo electrónico del destinatario")
-    subject = st.text_input("Asunto del correo electrónico")
-    body = st.text_area("Cuerpo del correo electrónico")
-    attachment_path = st.text_input("Ruta del archivo adjunto")
-    attachment_name = st.text_input("Nombre del archivo adjunto")
-
-    if st.button("Enviar correo electrónico"):
-        send_email(to_email, subject, body, attachment_path, attachment_name)
-        st.success("Correo electrónico enviado exitosamente")
-
-if __name__ == "__main__":
-    main()
