@@ -32,7 +32,7 @@ def number_to_text(number):
     return num2words(number, lang='es').replace("-", " ").capitalize()
 
 # Función para generar el PDF para COHEN TOMADOR
-def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
+def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -97,7 +97,7 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
     return pdf.output(dest='S').encode('latin1')
 
 # Función para generar el PDF para COHEN PRESTAMISTA
-def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
+def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -526,12 +526,20 @@ if st.button("Generar PDF"):
             plazo_texto = number_to_text(plazo)
 
             if tipo_prestamo == "COHEN TOMADOR":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN PRESTAMISTA":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN PRESTAMISTA T-BILLS":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
                 pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
