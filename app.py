@@ -542,8 +542,12 @@ if st.button("Generar PDF"):
                 plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES T-BILLS":
+                valor_nominal_texto = number_to_text(valor_nominal)
+                plazo_texto = number_to_text(plazo)
                 pdf_data = generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
             
             st.success("PDF generado con éxito")
