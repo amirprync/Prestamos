@@ -10,7 +10,7 @@ from email import encoders
 # Definir la clase PDF con la biblioteca fpdf2
 class PDF(FPDF):
     def header(self):
-        self.set_font('Arial', 'B', 12)
+        self.set_font('Arial', 'B', 10)
         self.cell(0, 10, 'Oferta de Préstamo', 0, 1, 'C')
 
     def footer(self):
@@ -18,14 +18,9 @@ class PDF(FPDF):
         self.set_font('Arial', 'I', 8)
         self.cell(0, 10, f'Página {self.page_no()}', 0, 0, 'C')
 
-    def chapter_title(self, title):
-        self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, title, 0, 1, 'L')
-        self.ln(10)
-
     def chapter_body(self, body):
-        self.set_font('Arial', '', 12)
-        self.multi_cell(0, 10, body)
+        self.set_font('Arial', '', 10)
+        self.multi_cell(0, 5, body, 0, 'J')
         self.ln()
 
 # Función para sanitizar el texto y evitar problemas de codificación
@@ -40,11 +35,7 @@ def number_to_text(number):
 def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
-    
-    valor_nominal_texto = number_to_text(valor_nominal)
-    plazo_texto = number_to_text(plazo)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
@@ -109,11 +100,7 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
 def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
-    
-    valor_nominal_texto = number_to_text(valor_nominal)
-    plazo_texto = number_to_text(plazo)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
@@ -173,8 +160,7 @@ def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comi
 def generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
@@ -238,8 +224,7 @@ def generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, c
 def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
@@ -298,11 +283,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
 def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
-    
-    valor_nominal_texto = number_to_text(valor_nominal)
-    plazo_texto = number_to_text(plazo)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
@@ -368,11 +349,7 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
 def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, tasa_anual, plazo, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador):
     pdf = PDF()
     pdf.add_page()
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
-    
-    valor_nominal_texto = number_to_text(valor_nominal)
-    plazo_texto = number_to_text(plazo)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
     body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
