@@ -515,7 +515,7 @@ if tipo_prestamo in ["PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS
     cuit_tomador = st.number_input("CUIT Tomador", min_value=0, step=1)
 
 if st.button("Generar PDF"):
-    with st.spinner("Generando PDF y enviando por correo..."):
+    with st.spinner("Generando PDF..."):
         # Convertir los valores de los selectbox a formato adecuado
         interes = int(interes.replace('%', ''))
         tasa_anual = int(tasa_anual.replace('%', ''))
@@ -545,4 +545,4 @@ if st.button("Generar PDF"):
             st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
         
         except Exception as e:
-            st.error(f"Error al generar el PDF o enviar el correo: {str(e)}")
+            st.error(f"Error al generar el PDF: {str(e)}")
