@@ -90,7 +90,6 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio [ ] del día de pago.\n\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}.\n\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -150,7 +149,6 @@ def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comi
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -214,7 +212,6 @@ def generate_pdf_cohen_tomador_tbills(mes, dia, cliente, interes, prestamista, c
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}.\n\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -273,7 +270,6 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, cliente, interes, prestamist
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}.\n\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -339,7 +335,6 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, cliente, interes, prestamista
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}.\n\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
@@ -404,7 +399,6 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, pres
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n"
             f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
-            f"Cuenta bancaria del Prestamista: {sanitize_text(cuenta_bancaria)}\n\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
