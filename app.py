@@ -535,7 +535,7 @@ if st.button("Generar PDF"):
             # Enviar el correo automáticamente
             enviar_email(pdf_data, "oferta_prestamo.pdf")
             
-            st.success("Recorda debe ser firmado por las partes intervinientes!!!")
+            st.success("Recordá que el contrato debe ser firmado por las partes intervinientes!!!")
             st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
         
         except Exception as e:
