@@ -439,7 +439,7 @@ def enviar_email(pdf_data, file_name):
         texto = mensaje.as_string()
         servidor.sendmail(remitente, destinatario, texto.encode('utf-8'))
         servidor.quit()
-        st.success('Descarga el PDF del prestamo generado. Recorda que el mismo debe ser firmado por las partes intervinientes')
+        st.success('Descarga el PDF del prestamo generado.')
     except Exception as e:
         st.error(f'Error al enviar el correo: {e}')
 
@@ -535,7 +535,7 @@ if st.button("Generar PDF"):
             # Enviar el correo automáticamente
             enviar_email(pdf_data, "oferta_prestamo.pdf")
             
-            st.success("PDF generado exitosamente")
+            st.success("Recorda debe ser firmado por las partes intervinientes!!!")
             st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
         
         except Exception as e:
