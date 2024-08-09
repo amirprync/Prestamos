@@ -548,7 +548,10 @@ if st.button("Generar PDF"):
             plazo_texto = number_to_text(plazo)
 
             if tipo_prestamo == "COHEN TOMADOR":
-                pdf_data = generate_pdf_cohen_tomador(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
+                if moneda == "Pesos":
+                    pdf_data = generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio)
+                else:  # Para dólares
+                    pdf_data = generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio, cuenta_bancaria)
             elif tipo_prestamo == "COHEN PRESTAMISTA":
                 pdf_data = generate_pdf_cohen_prestamista(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "COHEN TOMADOR T-BILLS":
