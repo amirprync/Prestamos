@@ -513,8 +513,8 @@ valor_nominal = st.number_input("Valor Nominal", min_value=0, step=1)
 tasa_anual = st.selectbox("Tasa Anual", [f"{i}%" for i in range(1, 21)])
 plazo = st.selectbox("Plazo (en meses)", list(range(1, 13)))
 
-# Mostrar el campo "Tipo de cambio" solo si la moneda es "Dólares"
-if tipo_prestamo in ["COHEN TOMADOR", "COHEN PRESTAMISTA", "PRESTAMO ENTRE CLIENTES"] and moneda == "Dólares":
+# Mostrar el campo "Tipo de cambio" si la moneda es "Dólares" o si es uno de los T-BILLS
+if (tipo_prestamo in ["COHEN TOMADOR", "COHEN PRESTAMISTA", "PRESTAMO ENTRE CLIENTES"] and moneda == "Dólares") or tipo_prestamo in ["COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES T-BILLS"]:
     cuenta_bancaria = st.text_input("Tipo de cambio")
 
 cuit = st.number_input("CUIT", min_value=0, step=1)
