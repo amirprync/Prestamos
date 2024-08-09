@@ -37,7 +37,7 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
+    body = ("Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
             f"{sanitize_text(cliente)}\n"
             f"Presente\n\n"
