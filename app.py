@@ -76,7 +76,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
             f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II.\n")
     
     # Añadir el texto sobre el tipo de cambio si la moneda es "Dólares"
-    if moneda == "Dólares":
+    if moneda == "Dólares" and cuenta_bancaria:
         body += (f"El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n")
     
     body += (f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n\n"
@@ -114,7 +114,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
             f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.\n")
 
-    if moneda == "Dólares":
+    if moneda == "Dólares" and cuenta_bancaria:
         body += (f"El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n")
     
     body += (f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n\n"
