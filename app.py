@@ -424,15 +424,15 @@ def enviar_email(pdf_data, file_name):
         mensaje['Subject'] = asunto
         mensaje.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
 
-       # Asegurarse de que pdf_data es del tipo bytes
-       pdf_data = bytes(pdf_data) if isinstance(pdf_data, bytearray) else pdf_data
+        # Asegurarse de que pdf_data es del tipo bytes
+        pdf_data = bytes(pdf_data) if isinstance(pdf_data, bytearray) else pdf_data
 
-       # Adjuntar el archivo
-       parte = MIMEBase('application', 'octet-stream')
-       parte.set_payload(pdf_data)
-       encoders.encode_base64(parte)
-       parte.add_header('Content-Disposition', f"attachment; filename={file_name}")
-       mensaje.attach(parte)
+        # Adjuntar el archivo
+        parte = MIMEBase('application', 'octet-stream')
+        parte.set_payload(pdf_data)
+        encoders.encode_base64(parte)
+        parte.add_header('Content-Disposition', f"attachment; filename={file_name}")
+        mensaje.attach(parte)
 
         # Conexión y envío del correo
         servidor = smtplib.SMTP(servidor_smtp, puerto_smtp)
