@@ -133,7 +133,7 @@ def generate_pdf_cohen_prestamista(mes, dia, cliente, interes, prestamista, comi
             f"TERCERO: La presente Oferta de Préstamo tiene vigencia por el plazo de 5 (cinco) días hábiles, considerándose aceptada si en o antes de dicho plazo, el Prestamista realiza la transferencia de los Valores Negociables a la cuenta comitente del Tomador, conforme se establece en la cláusula PRIMERA del Anexo I adjunto.\n"
             f"Atentamente,\n\n"
             f"____________________________\n"
-            f"Por {sanitize_text(cliente)}\n"
+            f"Por {sanitize_text(tomador)}\n"
             f"Aclaración:\n"
             f"Carácter:\n\n"
             f"ANEXO I\n"
