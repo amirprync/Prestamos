@@ -57,6 +57,7 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
             f"Por COHEN S.A.\n"
             f"Aclaración: Nicolas Parrondo\n"
             f"Carácter: Apoderado\n\n"
+            pdf.add_page()
             f"ANEXO I\n"
             f"OFERTA DE PRÉSTAMO DE VALORES NEGOCIABLES\n"
             f"En el supuesto de ser aceptada la Oferta de Préstamo en los términos aquí previstos, de la cual la presente forma parte como Anexo I, se entenderá que se ha perfeccionado el siguiente contrato de préstamo (en adelante, el 'Contrato de Préstamo' o el 'Contrato' indistintamente), y tendrá como partes a:\n"
