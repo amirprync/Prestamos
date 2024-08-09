@@ -404,7 +404,6 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, cliente, interes, pres
     pdf.chapter_body(body)
     return pdf.output(dest='S').encode('latin1')
 
-# Función para enviar el correo electrónico con el PDF adjunto
 def enviar_email(pdf_data, file_name):
     remitente = 'gallo@cohen.com.ar'
     destinatario = 'ddjj@cohen.com.ar'
@@ -437,12 +436,12 @@ def enviar_email(pdf_data, file_name):
         servidor.starttls()
         servidor.login(usuario_smtp, contrasena_smtp)
         texto = mensaje.as_string()
-        servidor.sendmail(remitente, destinatario, texto.encode('utf-8'))
+        servidor.sendmail(remitente, destinatario, texto)
         servidor.quit()
         st.success('Descarga el PDF del prestamo generado.')
     except Exception as e:
         st.error(f'Error al enviar el correo: {e}')
-
+        
 import streamlit as st
 
 st.set_page_config(page_title="Generador de Oferta de Préstamo", layout="wide")
