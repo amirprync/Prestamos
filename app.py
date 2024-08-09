@@ -124,7 +124,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
     return pdf.output(dest='S')
 
 # Función para generar el PDF para COHEN PRESTAMISTA
-def generate_pdf_cohen_prestamista(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
+def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio, cuenta_bancaria=None):
     pdf = PDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -154,8 +154,12 @@ def generate_pdf_cohen_prestamista(mes, dia, interes, prestamista, comitente_pre
             f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en COHEN S.A. (en adelante, la 'Cuenta del Prestamista').\n"
             f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en COHEN S.A. (Agente de Negociación, Liquidación y Compensación Integral N° 21) (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n"
             f"SEGUNDA: El presente préstamo se establece por un plazo de {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(tasa_anual)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n\n"
-            f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n"
-            f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n\n"
+            f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II.\n")
+    
+    if moneda == "Dólares":
+        body += (f"El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n\n")
+    
+    body += (f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n\n"
             f"CUARTA: El Prestamista podrá solicitar la cancelación anticipada del préstamo de los Valores Negociables antes del vencimiento del Plazo, para lo cual deberá notificar por escrito al Tomador con una antelación de 48 horas hábiles a la efectiva fecha de cancelación. En caso de ejercerse tal derecho, el Tomador abonará en forma proporcional el importe de la contraprestación convenida en la cláusula SEGUNDA.\n\n"
             f"QUINTA: El Tomador se obliga a restituir los Valores Negociables al vencimiento del Plazo.\n\n"
             f"SEXTA: El Tomador se compromete a realizar todos aquellos actos necesarios para la conservación de los Valores Negociables, obligándose a restituirlos a la finalización del Plazo en igual cantidad y especie que los recibiera.\n\n"
@@ -175,8 +179,12 @@ def generate_pdf_cohen_prestamista(mes, dia, interes, prestamista, comitente_pre
             f"Especie: {sanitize_text(especie)} (código especie {sanitize_text(codigo_especie)}).\n"
             f"Valor Nominal: {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}).\n"
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n"
-            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n"
-            f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n"
+            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.")
+    
+    if moneda == "Dólares":
+        body += (f" El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n")
+    
+    body += (f"Plazo: {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses.\n"
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
