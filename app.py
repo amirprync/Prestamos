@@ -82,7 +82,6 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
             f"DÉCIMO CUARTA: El Tomador no podrá ceder su posición contractual bajo el Contrato, ni ninguno de los derechos emergentes del mismo sin el consentimiento previo y escrito otorgado por el Prestamista.\n\n"
             f"DÉCIMO QUINTA: Toda modificación a este Contrato deberá ser realizada por las Partes por escrito y conforme las mismas formalidades que se observan en este Contrato.\n\n"
             f"DÉCIMO SEXTA: Para todos los efectos legales derivados de esta Oferta, las Partes constituyen sus domicilios en los indicados en el segundo párrafo del presente Anexo, donde se tendrán por válidas todas las notificaciones. Toda controversia relacionada al presente Contrato será resuelta en forma inapelable por el Tribunal de Arbitraje General de la Bolsa de Comercio de Buenos Aires por las reglas del arbitraje de derecho, que las partes declaran conocer y aceptar.\n"
-            f"\f"
             f"\nANEXO II\n"
             f"Condiciones de la operación de Préstamo de Títulos Valores:\n\n"
             f"Prestamista: {sanitize_text(prestamista)}, cuenta Comitente N° {sanitize_text(comitente_prestamista)} Depositante N° {sanitize_text(depositante_prestamista)}.\n\n"
