@@ -37,7 +37,7 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = ("Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2024\n\n"
             f"Sres.\n"
             f"{sanitize_text(cliente)}\n"
             f"Presente\n\n"
@@ -57,7 +57,6 @@ def generate_pdf_cohen_tomador(mes, dia, cliente, interes, prestamista, comitent
             f"Por COHEN S.A.\n"
             f"Aclaración: Nicolas Parrondo\n"
             f"Carácter: Apoderado\n\n"
-            "\n" * 15
             f"ANEXO I\n"
             f"OFERTA DE PRÉSTAMO DE VALORES NEGOCIABLES\n"
             f"En el supuesto de ser aceptada la Oferta de Préstamo en los términos aquí previstos, de la cual la presente forma parte como Anexo I, se entenderá que se ha perfeccionado el siguiente contrato de préstamo (en adelante, el 'Contrato de Préstamo' o el 'Contrato' indistintamente), y tendrá como partes a:\n"
