@@ -579,7 +579,7 @@ if st.button("Generar PDF"):
                 pdf_data = generate_pdf_cohen_prestamista_tbills(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES":
                 if moneda == "Pesos":
-                    pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
+                    pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
                 else:  # Para dólares
                     pdf_data = generate_pdf_prestamo_entre_clientes(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador)
             elif tipo_prestamo == "PRESTAMO ENTRE CLIENTES T-BILLS":
