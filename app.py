@@ -136,7 +136,7 @@ def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comit
             f"Ref.: Oferta de Préstamo de Valores Negociables\n\n"
             f"De nuestra mayor consideración:\n"
             f"Conforme a las conversaciones mantenidas, nos dirigimos a Cohen S.A. (en adelante, el 'Prestamista'), a fin de formular con carácter de irrevocable la presente Oferta de Préstamo de Valores Negociables (en adelante, la 'Oferta de Préstamo').\n"
-            f"A los efectos de la presente Oferta de Préstamo, el Prestamista y {sanitize_text(prestamista)} (en adelante, el 'Tomador') serán denominados en forma conjunta como las 'Partes'.\n\n"
+            f"A los efectos de la presente Oferta de Préstamo, el Prestamista y {sanitize_text(tomador)} (en adelante, el 'Tomador') serán denominados en forma conjunta como las 'Partes'.\n\n"
             f"PRIMERO: El Tomador ofrece al Prestamista realizar un contrato de préstamo bajo el cual el Prestamista entregará al Tomador, en calidad de préstamo, los Valores Negociables que se indican en el Anexo I a la presente Oferta de Préstamo, bajo el cual se establecen los términos y condiciones que regirán dicho contrato.\n\n"
             f"SEGUNDO: En caso que el Prestamista decida aceptar la presente Oferta de Préstamo, las obligaciones y derechos de las Partes serán estrictamente los que resultan del Anexo I adjunto a la presente.\n\n"
             f"TERCERO: La presente Oferta de Préstamo tiene vigencia por el plazo de 5 (cinco) días hábiles, considerándose aceptada si en o antes de dicho plazo, el Prestamista realiza la transferencia de los Valores Negociables a la cuenta comitente del Tomador, conforme se establece en la cláusula PRIMERA del Anexo I adjunto.\n"
@@ -148,7 +148,7 @@ def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comit
             f"ANEXO I\n"
             f"OFERTA DE PRÉSTAMO DE VALORES NEGOCIABLES\n"
             f"En el supuesto de ser aceptada la Oferta de Préstamo en los términos aquí previstos, de la cual la presente forma parte como Anexo I, se entenderá que se ha perfeccionado el siguiente contrato de préstamo (en adelante, el 'Contrato de Préstamo' o el 'Contrato' indistintamente), y tendrá como partes a:\n"
-            f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit)}, con domicilio en {sanitize_text(domicilio)} (en adelante, el 'Tomador'), por una parte, y\n"
+            f"a) {sanitize_text(tomador)}, CUIT {sanitize_text(cuit)}, con domicilio en {sanitize_text(domicilio)} (en adelante, el 'Tomador'), por una parte, y\n"
             f"b) por la otra, COHEN S.A., CUIT 30-55854331-7, con domicilio en la calle Ortiz de Ocampo 3302, Módulo IV, piso 2° de la Ciudad Autónoma de Buenos Aires (en adelante, el 'Prestamista' y conjuntamente con el Prestamista, las 'Partes').\n\n"
             f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: {sanitize_text(especie)} por un valor nominal de {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}) con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n"
             f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en COHEN S.A. (en adelante, la 'Cuenta del Prestamista').\n"
@@ -179,7 +179,7 @@ def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comit
             f"Especie: {sanitize_text(especie)} (código especie {sanitize_text(codigo_especie)}).\n"
             f"Valor Nominal: {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}).\n"
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n"
-            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.")
+            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.\n")
     
     if moneda == "Dólares":
         body += (f" El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n")
@@ -266,13 +266,13 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, interes, prestamista, comite
             f"Ref.: Oferta de Préstamo de Valores Negociables\n\n"
             f"De nuestra mayor consideración:\n"
             f"Conforme a las conversaciones mantenidas, nos dirigimos a Cohen S.A. (en adelante, el 'Prestamista'), a fin de formular con carácter de irrevocable la presente Oferta de Préstamo de Valores Negociables (en adelante, la 'Oferta de Préstamo').\n"
-            f"A los efectos de la presente Oferta de Préstamo, el Prestamista y {sanitize_text(prestamista)} (en adelante, el 'Tomador') serán denominados en forma conjunta como las 'Partes'.\n\n"
+            f"A los efectos de la presente Oferta de Préstamo, el Prestamista y {sanitize_text(tomador)} (en adelante, el 'Tomador') serán denominados en forma conjunta como las 'Partes'.\n\n"
             f"PRIMERO: El Tomador ofrece al Prestamista realizar un contrato de préstamo bajo el cual el Prestamista entregará al Tomador, en calidad de préstamo, los Valores Negociables que se indican en el Anexo I a la presente Oferta de Préstamo, bajo el cual se establecen los términos y condiciones que regirán dicho contrato.\n\n"
             f"SEGUNDO: En caso que el Prestamista decida aceptar la presente Oferta de Préstamo, las obligaciones y derechos de las Partes serán estrictamente los que resultan del Anexo I adjunto a la presente.\n\n"
             f"TERCERO: La presente Oferta de Préstamo tiene vigencia por el plazo de 5 (cinco) días hábiles, el Prestamista realiza la transferencia de los Valores Negociables a la cuenta comitente del Tomador, conforme se establece en la cláusula PRIMERA del Anexo I adjunto.\n\n"
             f"Atentamente,\n\n"
             f"____________________________\n"
-            f"Por {sanitize_text(prestamista)}\n"
+            f"Por {sanitize_text(tomador)}\n"
             f"Aclaración:\n"
             f"Carácter:\n\n"
             f"ANEXO I\n"
@@ -339,8 +339,8 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista,
             f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit_prestamista)}, con domicilio en {sanitize_text(domicilio_prestamista)} (en adelante, el 'Prestamista'), por una parte, y\n"
             f"b) {sanitize_text(tomador)}, CUIT {sanitize_text(cuit_tomador)}, con domicilio en {sanitize_text(domicilio_tomador)} (en adelante, el 'Tomador'), por la otra.\n\n"
             f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: {sanitize_text(especie)} por un valor nominal de {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}) con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n\n"
-            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en {sanitize_text(depositante_prestamista)} (en adelante, la 'Cuenta del Prestamista').\n"
-            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en {sanitize_text(depositante_tomador)} (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por {sanitize_text(depositante_tomador)} correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n\n"
+            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en COHEN S.A (en adelante, la 'Cuenta del Prestamista').\n"
+            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en COHEN S.A. (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n\n"
             f"SEGUNDA: El presente préstamo se establece por un plazo de {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(tasa_anual)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n\n"
             f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II.\n")
     
@@ -368,7 +368,7 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista,
             f"Especie: {sanitize_text(especie)} (código especie {sanitize_text(codigo_especie)}).\n\n"
             f"Valor Nominal: {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}).\n\n"
             f"Tasa: {sanitize_text(tasa_anual)}% nominal anual.\n\n"
-            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.")
+            f"Interés: Se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado. Será abonado en pesos desde la Cuenta del Tomador mediante depósito en la Cuenta del Prestamista.\n")
     
     if moneda == "Dólares":
         body += (f" El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n")
@@ -407,8 +407,8 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, interes, prestamista, 
             f"a) {sanitize_text(prestamista)}, CUIT {sanitize_text(cuit_prestamista)}, con domicilio en {sanitize_text(domicilio_prestamista)} (en adelante, el 'Prestamista'), por una parte, y\n"
             f"b) {sanitize_text(tomador)}, CUIT {sanitize_text(cuit_tomador)}, con domicilio en {sanitize_text(domicilio_tomador)} (en adelante, el 'Tomador'), por la otra.\n\n"
             f"PRIMERA: El Prestamista transfiere al Tomador en calidad de préstamo, los siguientes valores negociables: {sanitize_text(especie)} por un valor nominal de {sanitize_text(valor_nominal)} ({sanitize_text(valor_nominal_texto)}) con el alcance y extensión que se detalla en el Anexo II (en adelante, los 'Valores Negociables').\n\n"
-            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en {sanitize_text(depositante_prestamista)} (en adelante, la 'Cuenta del Prestamista').\n"
-            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en {sanitize_text(depositante_tomador)} (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por {sanitize_text(depositante_tomador)} correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n\n"
+            f"Los Valores Negociables se encuentran depositados en la cuenta comitente {sanitize_text(comitente_prestamista)}, de su titularidad, abierta en Cohen S.A. (en adelante, la 'Cuenta del Prestamista').\n"
+            f"El Tomador acepta recibir los Valores Negociables en su cuenta comitente N° {sanitize_text(comitente_tomador)} abierta en {sanitize_text(depositante_tomador)} (en adelante, la 'Cuenta del Tomador'), obligándose a devolver los Valores Negociables mediante transferencia a la Cuenta del Prestamista y/u otra que éste indicare fehacientemente conforme previsión contemplada en la cláusula NOVENA del presente Anexo. La constancia de débito de dicha transferencia emitida por COHEN S.A. correspondiente a la Cuenta del Prestamista será suficiente recibo del Tomador por la recepción de los Valores Negociables.\n\n"
             f"SEGUNDA: El presente préstamo se establece por un plazo de {sanitize_text(plazo)} ({sanitize_text(plazo_texto)}) meses contados a partir de la transferencia de los Valores Negociables a la Cuenta del Tomador (en adelante, el 'Plazo'). Durante el Plazo, el Prestamista percibirá una tasa de interés equivalente al {sanitize_text(tasa_anual)}% nominal anual que será abonado, en pesos, por el Tomador al vencimiento del Plazo. El interés se calculará sobre el valor promedio de cierre de contado 48 horas de los Valores Negociables por el Plazo pactado.\n\n"
             f"El interés resultante será abonado en pesos desde la Cuenta del Tomador mediante transferencia a la cuenta bancaria de titularidad del Prestamista indicada en el Anexo II. El mismo será calculado de acuerdo al Tipo de Cambio {sanitize_text(cuenta_bancaria)} del día de pago.\n"
             f"TERCERA: La renovación de la vigencia del Contrato acaecerá de modo automático en ausencia de una notificación de cancelación anticipada conforme la cláusula CUARTA.\n\n"
