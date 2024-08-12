@@ -20,12 +20,12 @@ class PDF(FPDF):
 
     def chapter_body(self, body):
         self.set_font('Arial', '', 10)
-        # Procesar el texto línea por línea para manejar los saltos de línea correctamente
-        for line in body.split('\n'):
-            if line.strip() == "":
-                self.ln()  # Añadir un salto de línea adicional para líneas vacías (que representan \n\n)
-            else:
-                self.multi_cell(0, 5, line, 0, 'J')
+        # Reemplaza cada '\n\n' por '\n' seguido de un salto de línea
+        lines = body.replace('\n\n', '\n').split('\n')
+        for line in lines:
+            self.multi_cell(0, 5, line, 0, 'J')
+            if line == "":
+                self.ln()  # Añade un salto de línea extra si la línea está vacía
 
 # Función para sanitizar el texto y evitar problemas de codificación
 def sanitize_text(text):
