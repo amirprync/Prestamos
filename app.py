@@ -105,6 +105,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
             f"\n\n"
             f"\n\n"
             f"\n\n"
+            f"\n\n"
             f"\nANEXO II\n"
             f"Condiciones de la operación de Préstamo de Títulos Valores:\n\n"
             f"Prestamista: {sanitize_text(prestamista)}, cuenta Comitente N° {sanitize_text(comitente_prestamista)} Depositante N° {sanitize_text(depositante_prestamista)}.\n\n"
