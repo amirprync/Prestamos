@@ -286,7 +286,7 @@ def generate_pdf_cohen_tomador_tbills(mes, dia, interes, prestamista, comitente_
             f"\n\n"
             f"\n\n"
             f"\n\n"
-            f"\nANEXO II\n\n
+            f"ANEXO II\n\n
             f"Condiciones de la operación de Préstamo de Títulos Valores:\n\n"
             f"Prestamista: {sanitize_text(prestamista)}, cuenta Comitente N° {sanitize_text(comitente_prestamista)} Depositante N° {sanitize_text(depositante_prestamista)}.\n\n"
             f"Tomador: {sanitize_text(tomador)}, cuenta comitente N° {sanitize_text(comitente_tomador)} Depositante N° {sanitize_text(depositante_tomador)}.\n\n"
