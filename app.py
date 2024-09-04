@@ -649,7 +649,7 @@ st.markdown("""
 
 st.title("Generar archivo PDF para oferta de préstamos")
 
-tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN TOMADOR T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
+tipo_prestamo = st.selectbox("Tipo de préstamo", ["COHEN TOMADOR", "COHEN PRESTAMISTA", "COHEN TOMADOR T-BILLS", "COHEN PRESTAMISTA T-BILLS", "PRESTAMO ENTRE CLIENTES", "PRESTAMO ENTRE CLIENTES T-BILLS"])
 dia = st.selectbox("Día", list(range(1, 32)))
 mes = st.selectbox("Mes", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
 interes = st.selectbox("Tasa de Penalidad - Interés", [f"{i}%" for i in range(1, 21)])
