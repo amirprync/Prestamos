@@ -694,10 +694,6 @@ if st.button("Generar PDF"):
             # Siempre convertir valor_nominal y plazo a texto
             valor_nominal_texto = number_to_text(valor_nominal)
             plazo_texto = number_to_text(plazo)
-            if isinstance(pdf_data, bytearray):
-                pdf_data = bytes(pdf_data)
-            elif not isinstance(pdf_data, bytes):
-                raise ValueError("pdf_data no es del tipo esperado (bytes o bytearray)")
 
             if tipo_prestamo == "COHEN TOMADOR":
                 if moneda == "Pesos":
@@ -730,13 +726,7 @@ if st.button("Generar PDF"):
             enviar_email(pdf_data, "oferta_prestamo.pdf")
             
             st.success("Recordá que el contrato debe ser firmado por las partes intervinientes!!!")
-            # st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
-            st.download_button(
-                label="Descargar PDF",
-                data=pdf_data,
-                file_name="oferta_prestamo.pdf",
-                mime="application/pdf"
-            )
+            st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
             
         except Exception as e:
             st.error(f"Error al generar el PDF: {str(e)}")
