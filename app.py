@@ -721,7 +721,7 @@ if st.button("Generar PDF"):
             # Convertir pdf_data a bytes si es un bytearray
             # if isinstance(pdf_data, bytearray):
             #    pdf_data = bytes(pdf_data)
-            pdf_data = pdf_data.encode('latin1')
+            # pdf_data = pdf_data.encode('latin1')
             
             # Enviar el correo automáticamente
             enviar_email(pdf_data, "oferta_prestamo.pdf")
