@@ -575,11 +575,19 @@ def enviar_email(pdf_data, file_name, motivos_prestamo=None):
     destinatario = 'ddjj@cohen.com.ar'
     asunto = 'Carta Oferta Prestamo'
     
-    # Modificar el cuerpo del email según si hay motivos o no
+    # Crear el cuerpo del email en formato HTML
     if motivos_prestamo:
-        cuerpo = f'Adjunto carta de prestamo.\n\nMotivos del préstamo:\n{motivos_prestamo}'
+        cuerpo_html = f'''
+        <html>
+        <body>
+            <p>Adjunto carta de prestamo.</p>
+            <p><strong>Motivos del préstamo:</strong></p>
+            <p><strong>{motivos_prestamo}</strong></p>
+        </body>
+        </html>
+        '''
     else:
-        cuerpo = 'Adjunto carta de prestamo.'
+        cuerpo_html = '<html><body><p>Adjunto carta de prestamo.</p></body></html>'
 
     # Configuración del servidor SMTP de Gmail
     servidor_smtp = 'smtp.gmail.com'
@@ -589,11 +597,14 @@ def enviar_email(pdf_data, file_name, motivos_prestamo=None):
 
     try:
         # Creación del mensaje
-        mensaje = MIMEMultipart()
+        mensaje = MIMEMultipart('alternative')
         mensaje['From'] = remitente
         mensaje['To'] = destinatario
         mensaje['Subject'] = asunto
-        mensaje.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
+        
+        # Agregar la versión HTML del mensaje
+        parte_html = MIMEText(cuerpo_html, 'html', 'utf-8')
+        mensaje.attach(parte_html)
 
         # Asegurarse de que pdf_data es del tipo bytes
         pdf_data = bytes(pdf_data) if isinstance(pdf_data, bytearray) else pdf_data
@@ -615,6 +626,7 @@ def enviar_email(pdf_data, file_name, motivos_prestamo=None):
         st.success('Descarga el PDF del prestamo generado.')
     except Exception as e:
         st.error(f'Error al enviar el correo: {e}')
+        
         
 import streamlit as st
 
