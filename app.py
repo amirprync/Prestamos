@@ -570,7 +570,7 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, interes, prestamista, 
     pdf.chapter_body(body)
     return pdf.output(dest='S')
 
-def enviar_email(pdf_data, file_name, motivos_prestamo=None):
+# def enviar_email(pdf_data, file_name, motivos_prestamo=None):
     remitente = 'gallo@cohen.com.ar'
     destinatario = 'ddjj@cohen.com.ar'
     asunto = 'Carta Oferta Prestamo'
