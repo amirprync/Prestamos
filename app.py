@@ -753,7 +753,7 @@ if st.button("Generar PDF"):
             st.success("Recordá que el contrato debe ser firmado por las partes intervinientes!!!")
             # st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
             pdf_bytes = bytes(pdf_data) if isinstance(pdf_data, bytearray) else pdf_data
-            st.download_button(label="Descargar PDF", data=pdf_bytes, file_name="oferta_prestamo.pdf", mime="application/pdf")
+            st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
             
         except Exception as e:
             st.error(f"Error al generar el PDF: {str(e)}")
