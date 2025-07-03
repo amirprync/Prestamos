@@ -748,7 +748,7 @@ if st.button("Generar PDF"):
             # pdf_data = pdf_data.encode('latin1')
             
             # Enviar el correo automáticamente
-            enviar_email(pdf_data, "oferta_prestamo.pdf", motivos_prestamo)
+            # enviar_email(pdf_data, "oferta_prestamo.pdf", motivos_prestamo)
             
             st.success("Recordá que el contrato debe ser firmado por las partes intervinientes!!!")
             # st.download_button(label="Descargar PDF", data=pdf_data, file_name="oferta_prestamo.pdf", mime="application/pdf")
