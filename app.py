@@ -31,6 +31,14 @@ def sanitize_text(text):
 def number_to_text(number):
     return num2words(number, lang='es').replace("-", " ").capitalize()
 
+def safe_pdf_output(pdf):
+    output = pdf.output(dest='S')
+    try:
+        return output.encode('latin-1')  # si es str, lo encodeamos
+    except AttributeError:
+        return bytes(output)  # si ya es bytes o bytearray
+
+
 # Función para generar el PDF para COHEN TOMADOR
 def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio, cuenta_bancaria=None):
     pdf = PDF()
