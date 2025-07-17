@@ -123,7 +123,9 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
+    pdf_output = pdf.output(dest='S')
+    if isinstance(pdf_output, str)
+    return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para COHEN PRESTAMISTA
 def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio, cuenta_bancaria=None):
