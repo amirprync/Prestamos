@@ -123,7 +123,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para COHEN PRESTAMISTA
 def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit, domicilio, cuenta_bancaria=None):
@@ -215,7 +215,7 @@ def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comit
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para COHEN TOMADOR T-BILLS
 def generate_pdf_cohen_tomador_tbills(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
@@ -311,7 +311,7 @@ def generate_pdf_cohen_tomador_tbills(mes, dia, interes, prestamista, comitente_
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para COHEN PRESTAMISTA T-BILLS
 def generate_pdf_cohen_prestamista_tbills(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit, domicilio):
@@ -394,7 +394,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, interes, prestamista, comite
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para PRESTAMO ENTRE CLIENTES
 def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador, cuenta_bancaria=None):
@@ -485,7 +485,7 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista,
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # Función para generar el PDF para PRESTAMO ENTRE CLIENTES T-BILLS
 def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, interes, prestamista, comitente_prestamista, depositante_prestamista, tomador, comitente_tomador, depositante_tomador, especie, codigo_especie, valor_nominal, valor_nominal_texto, tasa_anual, plazo, plazo_texto, cuenta_bancaria, cuit_prestamista, domicilio_prestamista, cuit_tomador, domicilio_tomador):
@@ -569,7 +569,7 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, interes, prestamista, 
             f"Base de Cálculo: Actual/365.\n")
 
     pdf.chapter_body(body)
-    return bytes(pdf.output(dest='S'), encoding='latin-1')
+    pdf_output = pdf.output(dest='S') if isinstance(pdf_output, str):     return pdf_output.encode('latin-1') return pdf_output  # Si ya es bytes, lo retornamos directamente
 
 # def enviar_email(pdf_data, file_name, motivos_prestamo=None):
     remitente = 'gallo@cohen.com.ar'
