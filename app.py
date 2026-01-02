@@ -37,7 +37,7 @@ def generate_pdf_cohen_tomador(mes, dia, moneda, interes, prestamista, comitente
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"{sanitize_text(prestamista)}\n"
             f"Presente\n\n"
@@ -131,7 +131,7 @@ def generate_pdf_cohen_prestamista(mes, dia, moneda, interes, prestamista, comit
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"Cohen S.A.\n"
             f"Presente\n\n"
@@ -224,7 +224,7 @@ def generate_pdf_cohen_tomador_tbills(mes, dia, interes, prestamista, comitente_
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"{sanitize_text(prestamista)}\n"
             f"Presente\n\n"
@@ -321,7 +321,7 @@ def generate_pdf_cohen_prestamista_tbills(mes, dia, interes, prestamista, comite
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"Cohen S.A.\n"
             f"Presente\n\n"
@@ -405,7 +405,7 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista,
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"{sanitize_text(prestamista)}\n"
             f"Presente\n\n"
@@ -497,7 +497,7 @@ def generate_pdf_prestamo_entre_clientes_tbills(mes, dia, interes, prestamista, 
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2025\n\n"
+    body = (f"Ciudad Autónoma de Buenos Aires, {sanitize_text(dia)} de {sanitize_text(mes)} de 2026\n\n"
             f"Sres.\n"
             f"{sanitize_text(prestamista)}\n"
             f"Presente\n\n"
