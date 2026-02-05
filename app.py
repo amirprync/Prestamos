@@ -418,7 +418,7 @@ def generate_pdf_prestamo_entre_clientes(mes, dia, moneda, interes, prestamista,
             f"TERCERO: La presente Oferta de Préstamo tiene vigencia por el plazo de 5 (cinco) días hábiles, considerándose aceptada si en o antes de dicho plazo, el Tomador comunica por medio fehaciente la aceptación y la misma es recibida por el Prestamista.\n\n"
             f"Atentamente,\n\n"
             f"____________________________\n"
-            f"Por {sanitize_text(tomador)}\n"
+            f"Por {sanitize_text(prestamista)}\n"
             f"Aclaración:\n"
             f"Carácter:\n\n"
             f"\n\n"
